@@ -11,14 +11,15 @@ import { Settings } from "sigma/settings";
 
 import { drawHover, drawLabel } from "../canvas-utils";
 import { Dataset, FiltersState } from "../types";
-import ClustersPanel from "./ClustersPanel";
-import DescriptionPanel from "./DescriptionPanel";
+// import ClustersPanel from "./ClustersPanel";
+// import DescriptionPanel from "./DescriptionPanel";
 import GraphDataController from "./GraphDataController";
 import GraphEventsController from "./GraphEventsController";
 import GraphSettingsController from "./GraphSettingsController";
-import GraphTitle from "./GraphTitle";
-import SearchField from "./SearchField";
-import TagsPanel from "./TagsPanel";
+// import GraphTitle from "./GraphTitle";
+// import SearchField from "./SearchField";
+// import TagsPanel from "./TagsPanel";
+import SideBar from "../components/SideBar"
 
 const Root: FC = () => {
   const graph = useMemo(() => new DirectedGraph(), []);
@@ -59,13 +60,14 @@ const Root: FC = () => {
         const clusters = keyBy(dataset.clusters, "key");
         const tags = keyBy(dataset.tags, "key");
 
-        dataset.nodes.forEach((node) =>
-          graph.addNode(node.key, {
-            ...node,
-            ...omit(clusters[node.cluster], "key"),
-            image: `./images/${tags[node.tag].image}`,
-          }),
-        );
+        dataset.nodes.forEach((node) => {
+          // console.log('node', node)
+            graph.addNode(node.key, {
+              ...node,
+              ...omit(clusters[node.cluster], "key"),
+              image: `./images/${tags[node.tag].image}`,
+            })
+        });
         dataset.edges.forEach(([source, target]) => graph.addEdge(source, target, { size: 1 }));
 
         // Use degrees as node sizes:
@@ -137,11 +139,16 @@ const Root: FC = () => {
                   <GrClose />
                 </button>
               </div>
-              <GraphTitle filters={filtersState} />
-              <div className="panels">
-                <SearchField filters={filtersState} />
-                <DescriptionPanel />
-                <ClustersPanel
+              {/* <GraphTitle filters={filtersState} /> */}
+
+              <SideBar />
+
+              {/* <div className="panels"> */}
+
+                {/* <PanelHeader /> */}
+                {/* <SearchField filters={filtersState} /> */}
+                {/* <DescriptionPanel /> */}
+                {/* <ClustersPanel
                   clusters={dataset.clusters}
                   filters={filtersState}
                   setClusters={(clusters) =>
@@ -158,8 +165,8 @@ const Root: FC = () => {
                         : { ...filters.clusters, [cluster]: true },
                     }));
                   }}
-                />
-                <TagsPanel
+                /> */}
+                {/* <TagsPanel
                   tags={dataset.tags}
                   filters={filtersState}
                   setTags={(tags) =>
@@ -174,8 +181,8 @@ const Root: FC = () => {
                       tags: filters.tags[tag] ? omit(filters.tags, tag) : { ...filters.tags, [tag]: true },
                     }));
                   }}
-                />
-              </div>
+                /> */}
+              {/* </div> */}
             </div>
           </>
         )}

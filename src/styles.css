@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora&family=Public+Sans:ital@0;1&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Public+Sans:ital@0;1&display=swap');
 
 /**
  * VARIABLES:
@@ -24,7 +24,7 @@
  * ************
  */
 body {
-  font-family: "Public Sans", sans-serif;
+  font-family: 'Public Sans', sans-serif;
   font-size: 0.9em;
   overflow: hidden;
 }
@@ -61,10 +61,18 @@ body {
 }
 #app-root,
 .sigma-container {
-  background: white;
+  background: rgb(52, 59, 70);
   position: absolute;
   inset: 0;
 }
+
+.sigma-container {
+  /* position: absolute; */
+  left: 320px;
+  width: calc(100% - 320px);
+  background: rgb(52, 59, 70);
+}
+
 .controls {
   position: absolute;
   bottom: var(--stage-padding);
@@ -91,14 +99,36 @@ body {
 }
 .panels {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 350px;
-  max-height: calc(100vh - 2 * var(--stage-padding));
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100vh;
+  /* max-height: calc(100vh - 2 * var(--stage-padding)); */
   overflow-y: auto;
-  padding: var(--stage-padding);
+  /* padding: var(--stage-padding); */
   scrollbar-width: thin;
+  background: #222325;
 }
+
+/* .panel-header {
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+.panel-header .info {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+} */
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -215,13 +245,13 @@ ul > li {
   opacity: var(--hover-opacity);
 }
 
-.caption-row input[type="checkbox"] {
+.caption-row input[type='checkbox'] {
   display: none;
 }
-.caption-row input[type="checkbox"]:not(:checked) + label {
+.caption-row input[type='checkbox']:not(:checked) + label {
   color: var(--dark-grey);
 }
-.caption-row input[type="checkbox"]:not(:checked) + label .circle {
+.caption-row input[type='checkbox']:not(:checked) + label .circle {
   background-color: white !important;
 }
 .caption-row label {
@@ -273,7 +303,7 @@ ul > li {
 .search-wrapper {
   position: relative;
 }
-.search-wrapper > input[type="search"] {
+.search-wrapper > input[type='search'] {
   width: calc(100%);
   height: 3em;
   box-shadow: var(--shadow);
