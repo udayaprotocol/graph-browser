@@ -1,11 +1,11 @@
 
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from "react";
 import Logo from '../../assets/nostr.svg'
 
 import './index.less'
 
-const SideBar = () => {
+const SideBar : FC = () => {
   return (
     <div className="panels">
       <div className="panel-header">
