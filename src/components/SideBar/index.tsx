@@ -5,7 +5,7 @@ import Logo from '../../assets/nostr.svg'
 import { BsSearch } from "react-icons/bs";
 
 import './index.less'
-import { TextField } from "@mui/material";
+// import { TextField } from "@mui/material";
 
 const SideBar : FC = () => {
   return (
