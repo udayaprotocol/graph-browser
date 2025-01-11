@@ -1,6 +1,5 @@
 
 import { FC } from "react";
-import { BsSearch } from "react-icons/bs";
 import './projectContent.less'
 import Search from "./Search";
 
