@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import { useSetSettings, useSigma } from "@react-sigma/core";
+import {  useSigma } from "@react-sigma/core";
 import Logo from '../../assets/nostr.svg'
 import UserContent from "./UserContent";
-import ProjectContent from "./ProjectContent";
+import ProjectContent from "./ProjectContent2";
 import Search from "./Search";
 
 import './index.less'

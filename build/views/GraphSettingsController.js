@@ -6,7 +6,7 @@ const core_1 = require("@react-sigma/core");
 const react_1 = require("react");
 const canvas_utils_1 = require("../canvas-utils");
 const use_debounce_1 = tslib_1.__importDefault(require("../use-debounce"));
-const NODE_FADE_COLOR = "#bbb";
+const NODE_FADE_COLOR = "rgba(39, 52, 71, 0.5)";
 const EDGE_FADE_COLOR = "#eee";
 const GraphSettingsController = ({ children, hoveredNode }) => {
     const sigma = (0, core_1.useSigma)();
@@ -24,7 +24,7 @@ const GraphSettingsController = ({ children, hoveredNode }) => {
                     return node === debouncedHoveredNode ||
                         graph.hasEdge(node, debouncedHoveredNode) ||
                         graph.hasEdge(debouncedHoveredNode, node)
-                        ? Object.assign(Object.assign({}, data), { zIndex: 1 }) : Object.assign(Object.assign({}, data), { zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false });
+                        ? Object.assign(Object.assign({}, data), { zIndex: 1 }) : Object.assign(Object.assign({}, data), { zIndex: 0, label: "", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false });
                 }
                 return data;
             },
@@ -41,11 +41,16 @@ const GraphSettingsController = ({ children, hoveredNode }) => {
         var _a;
         const hoveredColor = (debouncedHoveredNode && ((_a = sigma.getNodeDisplayData(debouncedHoveredNode)) === null || _a === void 0 ? void 0 : _a.color)) || "";
         sigma.setSetting("nodeReducer", debouncedHoveredNode
-            ? (node, data) => node === debouncedHoveredNode ||
-                graph.hasEdge(node, debouncedHoveredNode) ||
-                graph.hasEdge(debouncedHoveredNode, node)
-                ? Object.assign(Object.assign({}, data), { zIndex: 1 }) : Object.assign(Object.assign({}, data), { zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false })
-            : null);
+            ? (node, data) => {
+                if (node === debouncedHoveredNode ||
+                    graph.hasEdge(node, debouncedHoveredNode) ||
+                    graph.hasEdge(debouncedHoveredNode, node)) {
+                    return Object.assign(Object.assign({}, data), { zIndex: 1 });
+                }
+                else {
+                    return Object.assign(Object.assign({}, data), { zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false });
+                }
+            } : null);
         sigma.setSetting("edgeReducer", debouncedHoveredNode
             ? (edge, data) => graph.hasExtremity(edge, debouncedHoveredNode)
                 ? Object.assign(Object.assign({}, data), { color: hoveredColor, size: 2 }) : Object.assign(Object.assign({}, data), { color: EDGE_FADE_COLOR, hidden: true })
