@@ -61,30 +61,43 @@ const Root: FC = () => {
         const tags = keyBy(dataset.tags, "key");
 
         dataset.nodes.forEach((node) => {
-          // console.log('node', node)
+          try {
             graph.addNode(node.key, {
               ...node,
               ...omit(clusters[node.cluster], "key"),
               image: `./images/${tags[node.tag].image}`,
             })
+          } catch (error) {
+            // console.log('dataset.nodes', error)
+          }
+
         });
-        dataset.edges.forEach(([source, target]) => graph.addEdge(source, target, { size: 1 }));
+        dataset.edges.forEach(([source, target]) => {
+          graph.addEdge(source, target, { size: 1, color: 'rgb(123, 155, 212)' })
+          // graph.addEdge(source, target, { size: 1, color: '#b2bbd778' });
+          // graph.setEdgeAttribute(source, target, "color", '#403F4F');
+        });
 
         // Use degrees as node sizes:
-        const scores = graph.nodes().map((node) => graph.getNodeAttribute(node, "score"));
-        const minDegree = Math.min(...scores);
-        const maxDegree = Math.max(...scores);
-        const MIN_NODE_SIZE = 3;
-        const MAX_NODE_SIZE = 30;
-        graph.forEachNode((node) =>
-          graph.setNodeAttribute(
-            node,
-            "size",
-            ((graph.getNodeAttribute(node, "score") - minDegree) / (maxDegree - minDegree)) *
+        // const scores = graph.nodes().map((node) => graph.getNodeAttribute(node, "score"));
+        // const minDegree = Math.min(...scores);
+        // const maxDegree = Math.max(...scores);
+        // const MIN_NODE_SIZE = 3;
+        // const MAX_NODE_SIZE = 30;
+
+        /***
+         *  ((graph.getNodeAttribute(node, "score") - minDegree) / (maxDegree - minDegree)) *
               (MAX_NODE_SIZE - MIN_NODE_SIZE) +
-              MIN_NODE_SIZE,
-          ),
-        );
+              MIN_NODE_SIZE
+         */
+        graph.forEachNode((node) => {
+
+          graph.setNodeAttribute(node,"size",10);
+          graph.setNodeAttribute(node,"color",'rgb(73, 94, 152, 0.7)');
+
+          // graph.setNodeAttribute(node,"color",'#b2c6fe');
+
+        });
 
         setFiltersState({
           clusters: mapValues(keyBy(dataset.clusters, "key"), constant(true)),
@@ -141,7 +154,7 @@ const Root: FC = () => {
               </div>
               {/* <GraphTitle filters={filtersState} /> */}
 
-              <SideBar />
+              <SideBar node={hoveredNode} />
 
               {/* <div className="panels"> */}
 

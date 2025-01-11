@@ -5,9 +5,9 @@ import { FC, PropsWithChildren, useEffect } from "react";
 import { drawHover, drawLabel } from "../canvas-utils";
 import useDebounce from "../use-debounce";
 
-const NODE_FADE_COLOR = "#bbb";
+// const NODE_FADE_COLOR = "rgb(52, 59, 70, 0.5)";
+const NODE_FADE_COLOR = "rgba(39, 52, 71, 0.5)";
 const EDGE_FADE_COLOR = "#eee";
-
 const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null }>> = ({ children, hoveredNode }) => {
   const sigma = useSigma();
   const setSettings = useSetSettings();
@@ -33,7 +33,7 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
             graph.hasEdge(node, debouncedHoveredNode) ||
             graph.hasEdge(debouncedHoveredNode, node)
             ? { ...data, zIndex: 1 }
-            : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false };
+            : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false };
         }
         return data;
       },
@@ -58,13 +58,23 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
     sigma.setSetting(
       "nodeReducer",
       debouncedHoveredNode
-        ? (node, data) =>
-            node === debouncedHoveredNode ||
+        ? (node, data) => {
+          if (node === debouncedHoveredNode ||
             graph.hasEdge(node, debouncedHoveredNode) ||
-            graph.hasEdge(debouncedHoveredNode, node)
-              ? { ...data, zIndex: 1 }
-              : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false }
-        : null,
+            graph.hasEdge(debouncedHoveredNode, node)) {
+            // console.log('nodeReducer', node, data)
+            return { ...data, zIndex: 1 };
+          } else {
+            return { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false };
+          }
+        } : null,
+        // ? (node, data) =>
+        //     node === debouncedHoveredNode ||
+        //     graph.hasEdge(node, debouncedHoveredNode) ||
+        //     graph.hasEdge(debouncedHoveredNode, node)
+        //       ? { ...data, zIndex: 1 }
+        //       : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false }
+        // : null,
     );
     sigma.setSetting(
       "edgeReducer",
