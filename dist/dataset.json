@@ -973,7 +973,7 @@
     {
       "key": "graph theory",
       "label": "Graph theory",
-      "tag": "Field",
+      "tag": "User",
       "URL": "https://en.wikipedia.org/wiki/Graph%20theory",
       "cluster": "0",
       "x": 144.78919982910156,
@@ -17453,7 +17453,7 @@
     {
       "key": "histogram equalization",
       "label": "Histogram equalization",
-      "tag": "unknown",
+      "tag": "Event",
       "URL": "https://en.wikipedia.org/wiki/Histogram%20equalization",
       "cluster": "8",
       "x": 963.243408203125,
@@ -17463,7 +17463,7 @@
     {
       "key": "histogram matching",
       "label": "Histogram matching",
-      "tag": "unknown",
+      "tag": "Event",
       "URL": "https://en.wikipedia.org/wiki/Histogram%20matching",
       "cluster": "8",
       "x": 955.181884765625,
@@ -17683,7 +17683,7 @@
     {
       "key": "kernel smoother",
       "label": "Kernel smoother",
-      "tag": "unknown",
+      "tag": "User",
       "URL": "https://en.wikipedia.org/wiki/Kernel%20smoother",
       "cluster": "6",
       "x": 1166.2249755859375,
@@ -26299,6 +26299,8 @@
     { "key": "Person", "image": "person.svg" },
     { "key": "Technology", "image": "technology.svg" },
     { "key": "Tool", "image": "tool.svg" },
-    { "key": "unknown", "image": "unknown.svg" }
+    { "key": "unknown", "image": "unknown.svg" },
+    { "key": "Event", "image": "event.svg" },
+    { "key": "User", "image": "user.svg" }
   ]
 }

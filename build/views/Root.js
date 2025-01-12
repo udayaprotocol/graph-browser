@@ -15,6 +15,7 @@ const GraphDataController_1 = tslib_1.__importDefault(require("./GraphDataContro
 const GraphEventsController_1 = tslib_1.__importDefault(require("./GraphEventsController"));
 const GraphSettingsController_1 = tslib_1.__importDefault(require("./GraphSettingsController"));
 const SideBar_1 = tslib_1.__importDefault(require("../components/SideBar"));
+const ProjectColor = 'rgba(194, 160, 190, 0.7)';
 const Root = () => {
     const graph = (0, react_1.useMemo)(() => new graphology_1.DirectedGraph(), []);
     const [showContents, setShowContents] = (0, react_1.useState)(false);
@@ -38,32 +39,41 @@ const Root = () => {
         zIndex: true,
     }), []);
     (0, react_1.useEffect)(() => {
-        fetch(`./dataset.json`)
-            .then((res) => res.json())
-            .then((dataset) => {
-            const clusters = (0, lodash_1.keyBy)(dataset.clusters, "key");
-            const tags = (0, lodash_1.keyBy)(dataset.tags, "key");
-            dataset.nodes.forEach((node) => {
-                try {
-                    graph.addNode(node.key, Object.assign(Object.assign(Object.assign({}, node), (0, lodash_1.omit)(clusters[node.cluster], "key")), { image: `./images/${tags[node.tag].image}` }));
-                }
-                catch (error) {
-                }
+        try {
+            fetch(`./dataset.json`)
+                .then((res) => res.json())
+                .then((dataset) => {
+                const clusters = (0, lodash_1.keyBy)(dataset.clusters, "key");
+                const tags = (0, lodash_1.keyBy)(dataset.tags, "key");
+                dataset.nodes.forEach((node) => {
+                    try {
+                        graph.addNode(node.key, Object.assign(Object.assign(Object.assign({}, node), (0, lodash_1.omit)(clusters[node.cluster], "key")), { image: `./images/${tags[node.tag].image}` }));
+                    }
+                    catch (error) {
+                    }
+                });
+                dataset.edges.forEach(([source, target]) => {
+                    graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' });
+                });
+                graph.forEachNode((node, attrs) => {
+                    graph.setNodeAttribute(node, "size", 10);
+                    graph.setNodeAttribute(node, "color", 'rgba(73, 94, 152, 0.7)');
+                    const isProject = ['Organization', 'Person', 'Technology', 'Tool', 'Event', 'Concept'];
+                    if (isProject.includes(attrs.tag)) {
+                        graph.setNodeAttribute(node, "color", ProjectColor);
+                    }
+                });
+                setFiltersState({
+                    clusters: (0, lodash_1.mapValues)((0, lodash_1.keyBy)(dataset.clusters, "key"), (0, lodash_1.constant)(true)),
+                    tags: (0, lodash_1.mapValues)((0, lodash_1.keyBy)(dataset.tags, "key"), (0, lodash_1.constant)(true)),
+                });
+                setDataset(dataset);
+                requestAnimationFrame(() => setDataReady(true));
             });
-            dataset.edges.forEach(([source, target]) => {
-                graph.addEdge(source, target, { size: 1, color: 'rgb(123, 155, 212)' });
-            });
-            graph.forEachNode((node) => {
-                graph.setNodeAttribute(node, "size", 10);
-                graph.setNodeAttribute(node, "color", 'rgb(73, 94, 152, 0.7)');
-            });
-            setFiltersState({
-                clusters: (0, lodash_1.mapValues)((0, lodash_1.keyBy)(dataset.clusters, "key"), (0, lodash_1.constant)(true)),
-                tags: (0, lodash_1.mapValues)((0, lodash_1.keyBy)(dataset.tags, "key"), (0, lodash_1.constant)(true)),
-            });
-            setDataset(dataset);
-            requestAnimationFrame(() => setDataReady(true));
-        });
+        }
+        catch (error) {
+            console.log('fetching data', error);
+        }
     }, []);
     if (!dataset)
         return null;

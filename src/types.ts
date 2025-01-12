@@ -8,6 +8,16 @@ export interface NodeData {
   y: number;
 }
 
+// export interface NodeData {
+//   id: string;
+//   content: string;
+//   created_at: string;
+//   pubkey: string | null;
+//   type: string;
+//   x: number;
+//   y: number;
+// }
+
 export interface Cluster {
   key: string;
   color: string;
@@ -17,6 +27,14 @@ export interface Cluster {
 export interface Tag {
   key: string;
   image: string;
+}
+
+export interface Edge {
+  id: string;
+  label: string;
+  source: string;
+  target: string;
+  type: string;
 }
 
 export interface Dataset {

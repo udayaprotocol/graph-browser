@@ -21,6 +21,9 @@ import GraphSettingsController from "./GraphSettingsController";
 // import TagsPanel from "./TagsPanel";
 import SideBar from "../components/SideBar"
 
+const ProjectColor = 'rgba(194, 160, 190, 0.7)'
+
+
 const Root: FC = () => {
   const graph = useMemo(() => new DirectedGraph(), []);
   const [showContents, setShowContents] = useState(false);
@@ -54,7 +57,8 @@ const Root: FC = () => {
 
   // Load data on mount:
   useEffect(() => {
-    fetch(`./dataset.json`)
+    try {
+      fetch(`./dataset.json`)
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         const clusters = keyBy(dataset.clusters, "key");
@@ -64,6 +68,7 @@ const Root: FC = () => {
           try {
             graph.addNode(node.key, {
               ...node,
+              // label: node.id,
               ...omit(clusters[node.cluster], "key"),
               image: `./images/${tags[node.tag].image}`,
             })
@@ -73,7 +78,7 @@ const Root: FC = () => {
 
         });
         dataset.edges.forEach(([source, target]) => {
-          graph.addEdge(source, target, { size: 1, color: 'rgb(123, 155, 212)' })
+          graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
           // graph.addEdge(source, target, { size: 1, color: '#b2bbd778' });
           // graph.setEdgeAttribute(source, target, "color", '#403F4F');
         });
@@ -90,10 +95,14 @@ const Root: FC = () => {
               (MAX_NODE_SIZE - MIN_NODE_SIZE) +
               MIN_NODE_SIZE
          */
-        graph.forEachNode((node) => {
-
+        graph.forEachNode((node, attrs) => {
           graph.setNodeAttribute(node,"size",10);
-          graph.setNodeAttribute(node,"color",'rgb(73, 94, 152, 0.7)');
+          graph.setNodeAttribute(node,"color",'rgba(73, 94, 152, 0.7)');
+          const isProject = ['Organization', 'Person', 'Technology', 'Tool', 'Event','Concept']
+          if(isProject.includes(attrs.tag)){
+            graph.setNodeAttribute(node,"color",ProjectColor);
+          }
+          // graph.setNodeAttribute(node, 'color', '#606bb1')
 
           // graph.setNodeAttribute(node,"color",'#b2c6fe');
 
@@ -103,9 +112,13 @@ const Root: FC = () => {
           clusters: mapValues(keyBy(dataset.clusters, "key"), constant(true)),
           tags: mapValues(keyBy(dataset.tags, "key"), constant(true)),
         });
+
         setDataset(dataset);
         requestAnimationFrame(() => setDataReady(true));
       });
+    } catch (error) {
+      console.log('fetching data', error)
+    }
   }, []);
 
   if (!dataset) return null;

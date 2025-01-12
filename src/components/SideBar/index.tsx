@@ -8,20 +8,23 @@ import Search from "./Search";
 import './index.less'
 // import { TextField } from "@mui/material";
 
-const SideBar : FC<PropsWithChildren<{ node: string | null }>> = (node) => {
+const SideBar : FC<PropsWithChildren<{ node: string | null }>> = (selectedNode) => {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const [nodeType, setNodeType] = useState<string | null>(null)
-  // console.log('SideBar', graph, node)
+  const [nodeData, setNodeData] = useState<any>(null)
 
 
   useEffect(() => {
-    if(node.node){
-      const attrs = graph.getNodeAttributes(node.node)
-      console.log('attrs==>', attrs)
-      setNodeType(attrs.tag)
+    if(selectedNode.node){
+      const attrs = graph.getNodeAttributes(selectedNode.node)
+      const isUser = ['Company', 'Chart type', 'Field','List', 'Method', 'unknown', 'User']
+      const isProject = ['Organization', 'Person', 'Technology', 'Tool', 'Event','Concept']
+      setNodeType(isUser.includes(attrs.tag) ? 'User' : isProject.includes(attrs.tag) ? 'Event' : null)
+      setNodeData(attrs)
+      // console.log('nodeType', nodeType)
     }
-  }, [node])
+  }, [selectedNode])
 
   return (
     <div className="panels">
@@ -33,15 +36,14 @@ const SideBar : FC<PropsWithChildren<{ node: string | null }>> = (node) => {
       <div className="panel-content">
         <div className="border-bottom"></div>
         {
-          node.node && (
-            nodeType === 'user' ? <UserContent /> : 
-            nodeType === 'event' ? <ProjectContent /> : null
-          )
+          selectedNode.node ? (
+            nodeType === 'User' ? <UserContent nodeData={nodeData} /> : 
+            nodeType === 'Event' ? <ProjectContent nodeData={nodeData} /> : null
+          ) :
+          <div className="empty">Select or find a node to show information</div>
         }
-        <div className="empty">Select or find a node to show information</div>
         <Search />
-      </div>  
-
+      </div>
     </div>
 
   )

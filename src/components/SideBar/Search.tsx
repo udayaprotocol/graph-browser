@@ -7,7 +7,7 @@ const Search : FC = () => {
         <div className="search">
             <BsSearch />
             <input className="search-input" placeholder="Search..." />
-            <div className="tag">address</div>
+            <div className="tag">Address</div>
         </div>
     )
 }
