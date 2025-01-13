@@ -9,7 +9,7 @@ import { isUser, isProject } from '../../utils'
 import './index.less'
 // import { TextField } from "@mui/material";
 
-const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean }>> = ({ node: selectedNode, isFold: fold }) => {
+const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null }>> = ({ node: selectedNode, isFold: fold }) => {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const [nodeType, setNodeType] = useState<string | null>(null)

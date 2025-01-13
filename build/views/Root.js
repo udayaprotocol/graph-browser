@@ -15,12 +15,14 @@ const GraphDataController_1 = tslib_1.__importDefault(require("./GraphDataContro
 const GraphEventsController_1 = tslib_1.__importDefault(require("./GraphEventsController"));
 const GraphSettingsController_1 = tslib_1.__importDefault(require("./GraphSettingsController"));
 const SideBar_1 = tslib_1.__importDefault(require("../components/SideBar"));
+const utils_1 = require("../utils");
 const ProjectColor = 'rgba(194, 160, 190, 0.7)';
 const Root = () => {
     const graph = (0, react_1.useMemo)(() => new graphology_1.DirectedGraph(), []);
     const [showContents, setShowContents] = (0, react_1.useState)(false);
     const [dataReady, setDataReady] = (0, react_1.useState)(false);
     const [dataset, setDataset] = (0, react_1.useState)(null);
+    const [isFold, setIsFold] = (0, react_1.useState)(null);
     const [filtersState, setFiltersState] = (0, react_1.useState)({
         clusters: {},
         tags: {},
@@ -45,7 +47,16 @@ const Root = () => {
                 .then((dataset) => {
                 const clusters = (0, lodash_1.keyBy)(dataset.clusters, "key");
                 const tags = (0, lodash_1.keyBy)(dataset.tags, "key");
-                dataset.nodes.forEach((node) => {
+                const newNodes = dataset.nodes.map((node) => {
+                    if ((0, utils_1.isUser)(node.tag)) {
+                        const rP = (0, utils_1.randomNum)();
+                        return Object.assign(Object.assign({}, node), { points: rP > 1000 ? Math.round(rP / 1000) + 'K' : rP, id: (0, utils_1.randomUuid)(), eventNumber: (0, utils_1.randomEvents)() });
+                    }
+                    else {
+                        return Object.assign(Object.assign({}, node), { points: '', id: '', eventNumber: 0 });
+                    }
+                });
+                newNodes.forEach((node) => {
                     try {
                         graph.addNode(node.key, Object.assign(Object.assign(Object.assign({}, node), (0, lodash_1.omit)(clusters[node.cluster], "key")), { image: `./images/${tags[node.tag].image}` }));
                     }
@@ -75,9 +86,18 @@ const Root = () => {
             console.log('fetching data', error);
         }
     }, []);
+    const toggleSideBar = () => {
+        console.log('toggleSideBar', isFold);
+        if (isFold === null) {
+            setIsFold(true);
+        }
+        else {
+            setIsFold(!isFold);
+        }
+    };
     if (!dataset)
         return null;
-    return ((0, jsx_runtime_1.jsx)("div", { id: "app-root", className: showContents ? "show-contents" : "", children: (0, jsx_runtime_1.jsxs)(core_1.SigmaContainer, { graph: graph, settings: sigmaSettings, className: "react-sigma", children: [(0, jsx_runtime_1.jsx)(GraphSettingsController_1.default, { hoveredNode: hoveredNode }), (0, jsx_runtime_1.jsx)(GraphEventsController_1.default, { setHoveredNode: setHoveredNode }), (0, jsx_runtime_1.jsx)(GraphDataController_1.default, { filters: filtersState }), dataReady && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "controls", children: [(0, jsx_runtime_1.jsx)("div", { className: "react-sigma-control ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "show-contents", onClick: () => setShowContents(true), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(bi_1.BiBookContent, {}) }) }), (0, jsx_runtime_1.jsxs)(core_1.FullScreenControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsArrowsFullscreen, {}), (0, jsx_runtime_1.jsx)(bs_1.BsFullscreenExit, {})] }), (0, jsx_runtime_1.jsxs)(core_1.ZoomControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsZoomIn, {}), (0, jsx_runtime_1.jsx)(bs_1.BsZoomOut, {}), (0, jsx_runtime_1.jsx)(bi_1.BiRadioCircleMarked, {})] })] }), (0, jsx_runtime_1.jsxs)("div", { className: "contents", children: [(0, jsx_runtime_1.jsx)("div", { className: "ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "ico hide-contents", onClick: () => setShowContents(false), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(gr_1.GrClose, {}) }) }), (0, jsx_runtime_1.jsx)(SideBar_1.default, { node: hoveredNode })] })] }))] }) }));
+    return ((0, jsx_runtime_1.jsx)("div", { id: "app-root", className: showContents ? "show-contents" : "", children: (0, jsx_runtime_1.jsxs)(core_1.SigmaContainer, { graph: graph, settings: sigmaSettings, className: isFold ? 'fold-sider-bar' : '', children: [(0, jsx_runtime_1.jsx)(GraphSettingsController_1.default, { hoveredNode: hoveredNode }), (0, jsx_runtime_1.jsx)(GraphEventsController_1.default, { setHoveredNode: setHoveredNode }), (0, jsx_runtime_1.jsx)(GraphDataController_1.default, { filters: filtersState }), dataReady && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "controls", children: [(0, jsx_runtime_1.jsx)("div", { className: "react-sigma-control ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "show-contents", onClick: () => setShowContents(true), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(bi_1.BiBookContent, {}) }) }), (0, jsx_runtime_1.jsx)("div", { className: "ico fold-btn", children: (0, jsx_runtime_1.jsx)("button", { onClick: () => toggleSideBar(), children: (0, jsx_runtime_1.jsx)(bs_1.BsChevronLeft, { className: "icon-fold" }) }) }), (0, jsx_runtime_1.jsxs)(core_1.ZoomControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsZoomIn, {}), (0, jsx_runtime_1.jsx)(bs_1.BsZoomOut, {}), (0, jsx_runtime_1.jsx)(bs_1.BsArrowsFullscreen, {})] })] }), (0, jsx_runtime_1.jsxs)("div", { className: "contents", children: [(0, jsx_runtime_1.jsx)("div", { className: "ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "ico hide-contents", onClick: () => setShowContents(false), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(gr_1.GrClose, {}) }) }), (0, jsx_runtime_1.jsx)(SideBar_1.default, { isFold: isFold, node: hoveredNode })] })] }))] }) }));
 };
 exports.default = Root;
 //# sourceMappingURL=Root.js.map

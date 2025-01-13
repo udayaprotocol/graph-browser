@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const jsx_runtime_1 = require("react/jsx-runtime");
 const react_1 = tslib_1.__importDefault(require("react"));
 const client_1 = tslib_1.__importDefault(require("react-dom/client"));
-require("./styles.css");
+require("./styles.less");
 require("./main.less");
 const Root_1 = tslib_1.__importDefault(require("./views/Root"));
 const root = client_1.default.createRoot(document.getElementById("root"));

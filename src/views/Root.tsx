@@ -1,11 +1,11 @@
-import { FullScreenControl, SigmaContainer, ZoomControl } from "@react-sigma/core";
+import { SigmaContainer, ZoomControl } from "@react-sigma/core";
 // import { createNodeImageProgram } from "@sigma/node-image";
 import EdgeCurveProgram  from '@sigma/edge-curve'
 import { DirectedGraph } from "graphology";
 import { constant, keyBy, mapValues, omit } from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
-import { BiBookContent, BiRadioCircleMarked } from "react-icons/bi";
-import { BsArrowsFullscreen, BsFullscreenExit, BsZoomIn, BsZoomOut, BsChevronLeft } from "react-icons/bs";
+import { BiBookContent } from "react-icons/bi";
+import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
 
@@ -21,13 +21,13 @@ import GraphSettingsController from "./GraphSettingsController";
 // import TagsPanel from "./TagsPanel";
 import SideBar from "../components/SideBar"
 import { isUser, randomNum, randomUuid, randomEvents } from '../utils'
-import foldIcon from '../assets/fold.svg'
 
 const ProjectColor = 'rgba(194, 160, 190, 0.7)'
 
 
 const Root: FC = () => {
   const graph = useMemo(() => new DirectedGraph(), []);
+  // const sigmaRef = useRef(null)
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | null>(null);
