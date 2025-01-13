@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./styles.css";
+import "./styles.less";
 import "./main.less"
 import Root from "./views/Root";
 // import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
