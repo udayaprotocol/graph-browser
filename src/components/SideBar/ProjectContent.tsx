@@ -4,16 +4,19 @@ import { FC, useEffect, useState } from "react";
 import './projectContent.less'
 // import { FiltersState } from "../../types";
 
-const ProjectContent :FC<{ nodeData: any }> = ({ nodeData}) => {
+const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean) => void }> = ({ nodeData, openTable }) => {
 
     const sigma = useSigma();
     const graph = sigma.getGraph();
     // const [visibleItems, setVisibleItems] = useState<{ nodes: number; edges: number }>({ nodes: 0, edges: 0 });
     const [userNode, setUserNode] = useState<number>(0);
     const [eventNum, setEventNum] = useState<number>(0)
+    const [isOpened, setIsOpened] = useState<boolean>(false)
 
-    const openTable = () => {
-
+    const onToggleTable = () => {
+      console.log('onToggleTable', isOpened)
+      setIsOpened(!isOpened)
+      openTable(!isOpened)
     }
 
     useEffect(() => {
@@ -49,10 +52,10 @@ const ProjectContent :FC<{ nodeData: any }> = ({ nodeData}) => {
           </div>
           <div className="border-bottom"></div>
           <div className="content">
-            <div className="table-container">
+            <div className="sidebar-table-container">
               <div className="table-item">
                 <div className="title">FOUND {userNode} RECORDS</div>
-                <div className="btn table-btn" onClick={() => openTable()}>Open Table</div>
+                <div className="btn table-btn" onClick={() => onToggleTable()}>{ isOpened ? 'Close Table' : 'Open Table' }</div>
               </div>
               <div className="table-item">
                 <div className="title">EXPORT SELECTED DATA</div>

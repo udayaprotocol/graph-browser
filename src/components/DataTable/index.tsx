@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -49,7 +49,7 @@ const rows = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function DataTable() {
+const DataTable : FC<{isShow: boolean}> = ({isShow}) => {
   const [inputVal, setInputVal] = React.useState('');
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,30 +58,36 @@ export default function DataTable() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className='table-container'>
-        <SearchInput value={inputVal} onChange={(e) => onInputChange(e)} />
-        <Paper className='paper'>
-          <DataGrid
-            rows={rows}
-            disableColumnMenu={true}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[15]}
-            sx={{
-              border: 0,
-              '.MuiDataGrid-columnHeaderTitle': {
-                fontWeight: 600,
-              },
-              '.MuiDataGrid-cell': {
-                fontWeight: 100,
-                fontSize: 12,
-                opacity: 0.8,
-              }
-            }}
-          />
-        </Paper>
-      </div>
+      {
+        isShow ? (
+          <div className="table-container" >
+            <SearchInput value={inputVal} onChange={(e) => onInputChange(e)} />
+            <Paper className='paper'>
+              <DataGrid
+                rows={rows}
+                disableColumnMenu={true}
+                columns={columns}
+                initialState={{ pagination: { paginationModel } }}
+                pageSizeOptions={[15]}
+                sx={{
+                  border: 0,
+                  '.MuiDataGrid-columnHeaderTitle': {
+                    fontWeight: 600,
+                  },
+                  '.MuiDataGrid-cell': {
+                    fontWeight: 100,
+                    fontSize: 12,
+                    opacity: 0.8,
+                  }
+                }}
+              />
+            </Paper>
+          </div>
+        ) : null
+      }
     </ThemeProvider>
     
   );
 }
+
+export default DataTable;

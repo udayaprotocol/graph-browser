@@ -35,6 +35,7 @@ const Root: FC = () => {
     tags: {},
   });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [isShow, setIsShow] = useState<boolean>(false);
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
       // nodeProgramClasses: {
@@ -55,6 +56,11 @@ const Root: FC = () => {
     }),
     [],
   );
+
+  const onToggleTable = (isOpened: boolean) => {
+    console.log('onToggleTable', isOpened)
+    setIsShow(isOpened)
+  }
 
   // Load data on mount:
   useEffect(() => {
@@ -155,7 +161,7 @@ const Root: FC = () => {
                 <BiRadioCircleMarked />
               </ZoomControl>
             </div>
-            <div className="contents">
+            <div className="sigma-contents">
               <div className="ico">
                 <button
                   type="button"
@@ -168,8 +174,8 @@ const Root: FC = () => {
               </div>
               {/* <GraphTitle filters={filtersState} /> */}
 
-              <SideBar node={hoveredNode} />
-              <DataTable />
+              <SideBar node={hoveredNode} onToggleTable={(flag) => onToggleTable(flag)} />
+              <DataTable isShow={isShow} />
 
               {/* <div className="panels"> */}
 
