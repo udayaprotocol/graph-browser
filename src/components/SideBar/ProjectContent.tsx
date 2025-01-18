@@ -12,6 +12,10 @@ const ProjectContent :FC<{ nodeData: any }> = ({ nodeData}) => {
     const [userNode, setUserNode] = useState<number>(0);
     const [eventNum, setEventNum] = useState<number>(0)
 
+    const openTable = () => {
+
+    }
+
     useEffect(() => {
       // To ensure the graphology instance has up to data "hidden" values for
       // nodes, we wait for next frame before reindexing. This won't matter in the
@@ -48,7 +52,7 @@ const ProjectContent :FC<{ nodeData: any }> = ({ nodeData}) => {
             <div className="table-container">
               <div className="table-item">
                 <div className="title">FOUND {userNode} RECORDS</div>
-                <div className="btn table-btn">Open Table</div>
+                <div className="btn table-btn" onClick={() => openTable()}>Open Table</div>
               </div>
               <div className="table-item">
                 <div className="title">EXPORT SELECTED DATA</div>
@@ -67,7 +71,6 @@ const ProjectContent :FC<{ nodeData: any }> = ({ nodeData}) => {
               <div className="e-tag">Others</div>
             </div>
           </div>
-          {/* <Search /> */}
       </>
     )
 }

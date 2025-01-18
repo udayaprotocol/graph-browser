@@ -1,0 +1,38 @@
+.search {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background: #2f3032;
+  .icon-search, .icon-close {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    opacity: 0.5;
+    color: white;
+    > svg {
+      margin-top: 16px;
+    }
+  }
+  .icon-close {
+    cursor: pointer;
+    > svg {
+      margin-top: 14px;
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+  input {
+    background-color: transparent;
+    border: none;
+    height: 32px;
+    font-size: 16px;
+    flex: 1;
+    color: white;
+    margin-left: 5px;
+    &:active, &:focus, &:focus-visible {
+      border: none;
+      outline: none;
+    }
+  }
+}

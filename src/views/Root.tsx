@@ -20,6 +20,7 @@ import GraphSettingsController from "./GraphSettingsController";
 // import SearchField from "./SearchField";
 // import TagsPanel from "./TagsPanel";
 import SideBar from "../components/SideBar"
+import DataTable from "../components/DataTable"
 
 const ProjectColor = 'rgba(194, 160, 190, 0.7)'
 
@@ -168,6 +169,7 @@ const Root: FC = () => {
               {/* <GraphTitle filters={filtersState} /> */}
 
               <SideBar node={hoveredNode} />
+              <DataTable />
 
               {/* <div className="panels"> */}
 

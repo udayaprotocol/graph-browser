@@ -45,7 +45,9 @@ a {
 a:hover {
   opacity: var(--hover-opacity);
 }
-
+div {
+  box-sizing: border-box;
+}
 /**
  * LAYOUT:
  * *******

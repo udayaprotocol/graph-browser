@@ -1,0 +1,87 @@
+.search-panel {
+  .search-form {
+    display: flex;
+    color: white;
+    align-items: center;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+
+  }
+  .search-more {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    padding-left: 14px;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+
+    .search-input {
+      flex: 1;
+    }
+  }
+  .search-input {
+    background-color: transparent;
+    border: none;
+    height: 32px;
+    font-size: 16px;
+    flex: 1;
+    color: white;
+    margin-left: 5px;
+    &:active , &:focus, &:focus-visible{
+      border: none;
+      outline: none;
+    }
+  }
+  .tag {
+    width: 62px;
+    height: 24px;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.0980392157);
+    text-align: center;
+    &.active {
+      background-color: #606bb1;
+    }
+  }
+  .more-btn {
+    text-align: center;
+    height: 32px;
+    position: relative;
+    .icon-more {
+      cursor: pointer;
+      position: absolute;
+      &.sizeChange {
+        animation: sizeChange 1.5s ease-in-out infinite;
+        animation-fill-mode: both;
+      }
+      &.rotateAnimation {
+        animation: rotateAnimation .3s linear;
+        animation-fill-mode: both;
+      }
+    }
+
+  }
+}
+
+@keyframes rotateAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes sizeChange {
+  0% {
+    top: 0px;
+  }
+  50% {
+    top: 8px;
+  }
+  100% {
+    top: 0px;
+  }
+}
