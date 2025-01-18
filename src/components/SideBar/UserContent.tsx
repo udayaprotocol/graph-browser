@@ -24,6 +24,7 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData}) => {
         graph.forEachEdge((_, _2, _3, _4, source, target) => !source.hidden && !target.hidden && index.edges++);
         // setVisibleItems(index);
       });
+      console.log(nodeData);
     }, [nodeData]);
 
     return (
@@ -46,15 +47,15 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData}) => {
           <div className="node-info">
             <div className="item">
               <label className="label">Points</label>
-              <span className="value">1089.2K</span>
+              <span className="value">{nodeData.points}</span>
             </div>
             <div className="item">
               <label className="label">ID</label>
-              <span className="value">OX2434...656</span>
+              <span className="value">{nodeData.id}</span>
             </div>
             <div className="item">
               <label className="label">Event Number</label>
-              <span className="value">18</span>
+              <span className="value">{nodeData.eventNumber}</span>
             </div>
           </div>
           <div className="event">

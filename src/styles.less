@@ -75,11 +75,67 @@ body {
   background: rgb(52, 59, 70);
 }
 
+.react-sigma {
+}
+
+.fold-sider-bar .sigma-container {
+  animation: foldSideBar 0.3s linear;
+  animation-fill-mode: both;
+}
+
+.open-sider-bar .sigma-container {
+  animation: openSideBar 0.3s linear;
+  animation-fill-mode: both;
+}
+
 .controls {
   position: absolute;
-  bottom: var(--stage-padding);
-  left: var(--stage-padding);
+  left: 330px;
+  top: 20px;
 }
+
+.fold-sider-bar .controls {
+  left: 10px;
+}
+
+.fold-sider-bar .controls .fold-btn {
+  transform: rotate(180deg);
+  transition: all 0.3s ease;
+}
+
+
+.open-sider-bar .controls {
+  left: 330px;
+}
+
+.open-sider-bar .controls .fold-btn {
+  transform: rotate(-180deg);
+  transition: all 0.3s ease;
+}
+
+@keyframes foldSideBar {
+  0% {
+    left: 320px;
+    width: calc(100% - 320px);
+  }
+  100% {
+    left: 0;
+    width: 100%;
+  }
+}
+
+@keyframes openSideBar {
+  0% {
+    left: 0px;
+    width: 100%;
+  }
+  100% {
+    left: 320px;
+    width: calc(100% - 320px);
+  }
+}
+
+
 .graph-title {
   z-index: 1;
   position: absolute;
@@ -149,23 +205,30 @@ body {
 div.ico {
   --sigma-controls-size: 2rem;
 }
+
 div.ico > button {
   display: block;
   position: relative;
-  font-size: 1.8em;
-  width: 2em;
-  height: 2em;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  color: black;
-  background: white;
+  font-size: 16px;
+  width: 25px;
+  height: 25px;
+  color: white;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   outline: none;
-  margin-top: 0.2em;
+  margin-top: 10px;
   cursor: pointer;
 }
+
+div.ico .icon-fold {
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+}
+
 div.ico > button:hover {
-  color: var(--dark-grey);
+  background: rgba(255, 255, 255, 0.1);
 }
 div.ico > button > * {
   position: absolute;
