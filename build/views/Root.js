@@ -15,6 +15,7 @@ const GraphDataController_1 = tslib_1.__importDefault(require("./GraphDataContro
 const GraphEventsController_1 = tslib_1.__importDefault(require("./GraphEventsController"));
 const GraphSettingsController_1 = tslib_1.__importDefault(require("./GraphSettingsController"));
 const SideBar_1 = tslib_1.__importDefault(require("../components/SideBar"));
+const DataTable_1 = tslib_1.__importDefault(require("../components/DataTable"));
 const utils_1 = require("../utils");
 const ProjectColor = 'rgba(194, 160, 190, 0.7)';
 const Root = () => {
@@ -28,6 +29,7 @@ const Root = () => {
         tags: {},
     });
     const [hoveredNode, setHoveredNode] = (0, react_1.useState)(null);
+    const [isShow, setIsShow] = (0, react_1.useState)(false);
     const sigmaSettings = (0, react_1.useMemo)(() => ({
         edgeProgramClasses: { curve: edge_curve_1.default, },
         defaultDrawNodeLabel: canvas_utils_1.drawLabel,
@@ -40,6 +42,10 @@ const Root = () => {
         labelFont: "Lato, sans-serif",
         zIndex: true,
     }), []);
+    const onToggleTable = (isOpened) => {
+        console.log('onToggleTable', isOpened);
+        setIsShow(isOpened);
+    };
     (0, react_1.useEffect)(() => {
         try {
             fetch(`./dataset.json`)
@@ -97,7 +103,7 @@ const Root = () => {
     };
     if (!dataset)
         return null;
-    return ((0, jsx_runtime_1.jsx)("div", { id: "app-root", className: showContents ? "show-contents" : "", children: (0, jsx_runtime_1.jsxs)(core_1.SigmaContainer, { graph: graph, settings: sigmaSettings, className: isFold ? 'fold-sider-bar' : '', children: [(0, jsx_runtime_1.jsx)(GraphSettingsController_1.default, { hoveredNode: hoveredNode }), (0, jsx_runtime_1.jsx)(GraphEventsController_1.default, { setHoveredNode: setHoveredNode }), (0, jsx_runtime_1.jsx)(GraphDataController_1.default, { filters: filtersState }), dataReady && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "controls", children: [(0, jsx_runtime_1.jsx)("div", { className: "react-sigma-control ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "show-contents", onClick: () => setShowContents(true), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(bi_1.BiBookContent, {}) }) }), (0, jsx_runtime_1.jsx)("div", { className: "ico fold-btn", children: (0, jsx_runtime_1.jsx)("button", { onClick: () => toggleSideBar(), children: (0, jsx_runtime_1.jsx)(bs_1.BsChevronLeft, { className: "icon-fold" }) }) }), (0, jsx_runtime_1.jsxs)(core_1.ZoomControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsZoomIn, {}), (0, jsx_runtime_1.jsx)(bs_1.BsZoomOut, {}), (0, jsx_runtime_1.jsx)(bs_1.BsArrowsFullscreen, {})] })] }), (0, jsx_runtime_1.jsxs)("div", { className: "contents", children: [(0, jsx_runtime_1.jsx)("div", { className: "ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "ico hide-contents", onClick: () => setShowContents(false), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(gr_1.GrClose, {}) }) }), (0, jsx_runtime_1.jsx)(SideBar_1.default, { isFold: isFold, node: hoveredNode })] })] }))] }) }));
+    return ((0, jsx_runtime_1.jsx)("div", { id: "app-root", className: showContents ? "show-contents" : "", children: (0, jsx_runtime_1.jsxs)(core_1.SigmaContainer, { graph: graph, settings: sigmaSettings, className: isFold ? 'fold-sider-bar' : '', children: [(0, jsx_runtime_1.jsx)(GraphSettingsController_1.default, { hoveredNode: hoveredNode }), (0, jsx_runtime_1.jsx)(GraphEventsController_1.default, { setHoveredNode: setHoveredNode }), (0, jsx_runtime_1.jsx)(GraphDataController_1.default, { filters: filtersState }), dataReady && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "controls", children: [(0, jsx_runtime_1.jsx)("div", { className: "react-sigma-control ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "show-contents", onClick: () => setShowContents(true), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(bi_1.BiBookContent, {}) }) }), (0, jsx_runtime_1.jsx)("div", { className: "ico fold-btn", children: (0, jsx_runtime_1.jsx)("button", { onClick: () => toggleSideBar(), children: (0, jsx_runtime_1.jsx)(bs_1.BsChevronLeft, { className: "icon-fold" }) }) }), (0, jsx_runtime_1.jsxs)(core_1.ZoomControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsZoomIn, {}), (0, jsx_runtime_1.jsx)(bs_1.BsZoomOut, {}), (0, jsx_runtime_1.jsx)(bs_1.BsArrowsFullscreen, {})] })] }), (0, jsx_runtime_1.jsxs)("div", { className: "sigma-contents", children: [(0, jsx_runtime_1.jsx)("div", { className: "ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "ico hide-contents", onClick: () => setShowContents(false), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(gr_1.GrClose, {}) }) }), (0, jsx_runtime_1.jsx)(SideBar_1.default, { isFold: isFold, node: hoveredNode, onToggleTable: (flag) => onToggleTable(flag) }), (0, jsx_runtime_1.jsx)(DataTable_1.default, { isShow: isShow })] })] }))] }) }));
 };
 exports.default = Root;
 //# sourceMappingURL=Root.js.map
