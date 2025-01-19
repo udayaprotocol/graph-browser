@@ -14,20 +14,27 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
   const [nodeType, setNodeType] = useState<string | null>(null)
   const [nodeData, setNodeData] = useState<any>(null)
   const [animateCss, setAnimateCss] = useState('')
+  // searchNode
+  const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
-    if(selectedNode){
-      const attrs = graph.getNodeAttributes(selectedNode)
+    // 搜索或点击时设置Active
+    if(selectedNode || selected){
+      const attrs = graph.getNodeAttributes(selectedNode || selected)
       setNodeType(isUser(attrs.tag) ? 'User' : isProject(attrs.tag) ? 'Event' : null)
       setNodeData(attrs)
     }
-  }, [selectedNode])
+  }, [selectedNode, selected])
 
   useEffect(() => {
     if(fold !== null) {
       setAnimateCss(fold ? 'slideLeftOut' : 'slideLeftIn')
     }
   }, [fold])
+
+  const onSearch = (nodeId: string | null) => {
+    setSelected(nodeId)
+  }
 
   return (
     <div className={`panels ${animateCss}`}>
@@ -39,13 +46,13 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
       <div className="panel-content">
         <div className="border-bottom"></div>
         {
-          selectedNode ? (
+          (selectedNode || selected) ? (
             nodeType === 'User' ? <UserContent nodeData={nodeData} /> : 
             nodeType === 'Event' ? <ProjectContent nodeData={nodeData} openTable={(flag) => onToggleTable(flag)} /> : null
           ) :
           <div className="empty">Select or find a node to show information</div>
         }
-        <Search />
+        <Search onSearch={(node) => onSearch(node)} />
       </div>
     </div>
 
