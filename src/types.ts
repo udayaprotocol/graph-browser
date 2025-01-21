@@ -8,6 +8,24 @@ export interface NodeData {
   y: number;
 }
 
+export interface UserNode {
+  content: string;
+  created_at: string;
+  id: string;
+  label: string;
+  lamport_id: string;
+  pubkey: string | null;
+  category: string;
+}
+
+export interface UserEdge {
+  id: string;
+  label: string;
+  source: string;
+  target: string;
+  category: string;
+}
+
 // export interface NodeData {
 //   id: string;
 //   content: string;
@@ -38,10 +56,10 @@ export interface Edge {
 }
 
 export interface Dataset {
-  nodes: NodeData[];
-  edges: [string, string][];
-  clusters: Cluster[];
-  tags: Tag[];
+  nodes: UserNode[];
+  edges: UserEdge[];
+  // clusters: Cluster[];
+  // tags: Tag[];
 }
 
 export interface FiltersState {

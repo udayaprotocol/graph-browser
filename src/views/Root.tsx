@@ -41,11 +41,6 @@ const Root: FC = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
-      // nodeProgramClasses: {
-      //   image: createNodeImageProgram({
-      //     size: { mode: "force", value: 256 },
-      //   }),
-      // },
       edgeProgramClasses: { curve: EdgeCurveProgram, },
       defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
@@ -67,79 +62,34 @@ const Root: FC = () => {
 
   // Load data on mount:
   useEffect(() => {
+    console.log('fetching data')
     try {
-      fetch(`./dataset.json`)
+      fetch(`./all_users.json`)
       .then((res) => res.json())
       .then((dataset: Dataset) => {
-        const clusters = keyBy(dataset.clusters, "key");
-        const tags = keyBy(dataset.tags, "key");
+        // console.log('nodes', dataset.nodes)
+        // console.log('edges', dataset.edges)
 
         const newNodes = dataset.nodes.map((node) => {
-          if(isUser(node.tag)) {
-            const rP = randomNum();
-            return {
-              ...node,
-              points: rP > 1000 ? Math.round(rP/1000) + 'K' : rP,
-              id: randomUuid(),
-              eventNumber: randomEvents(),
-            }
-          } else {
-            return {
-              ...node,
-              points: '',
-              id: '',
-              eventNumber: 0,
-            }
-          }
-        });
+          const min = Math.random() * 1000
+          const max = Math.random() * 2000
+          return {...node, x: min , y: max}
+        })
 
         newNodes.forEach((node) => {
-          try {
-            graph.addNode(node.key, {
-              ...node,
-              // label: node.id,
-              ...omit(clusters[node.cluster], "key"),
-              image: `./images/${tags[node.tag].image}`,
+          console.log('node', node.id)
+            graph.addNode(node.id, {
+              ...node
             })
-          } catch (error) {
-            // console.log('dataset.nodes', error)
-          }
-
         });
-        dataset.edges.forEach(([source, target]) => {
+
+        dataset.edges.forEach(({source, target}) => {
           graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
-          // graph.addEdge(source, target, { size: 1, color: '#b2bbd778' });
-          // graph.setEdgeAttribute(source, target, "color", '#403F4F');
         });
 
-        // Use degrees as node sizes:
-        // const scores = graph.nodes().map((node) => graph.getNodeAttribute(node, "score"));
-        // const minDegree = Math.min(...scores);
-        // const maxDegree = Math.max(...scores);
-        // const MIN_NODE_SIZE = 3;
-        // const MAX_NODE_SIZE = 30;
-
-        /***
-         *  ((graph.getNodeAttribute(node, "score") - minDegree) / (maxDegree - minDegree)) *
-              (MAX_NODE_SIZE - MIN_NODE_SIZE) +
-              MIN_NODE_SIZE
-         */
         graph.forEachNode((node, attrs) => {
           graph.setNodeAttribute(node,"size",10);
           graph.setNodeAttribute(node,"color",'rgba(73, 94, 152, 0.7)');
-          const isProject = ['Organization', 'Person', 'Technology', 'Tool', 'Event','Concept']
-          if(isProject.includes(attrs.tag)){
-            graph.setNodeAttribute(node,"color",ProjectColor);
-          }
-          // graph.setNodeAttribute(node, 'color', '#606bb1')
-
-          // graph.setNodeAttribute(node,"color",'#b2c6fe');
-
-        });
-
-        setFiltersState({
-          clusters: mapValues(keyBy(dataset.clusters, "key"), constant(true)),
-          tags: mapValues(keyBy(dataset.tags, "key"), constant(true)),
         });
 
         setDataset(dataset);
@@ -151,7 +101,6 @@ const Root: FC = () => {
   }, []);
 
   const toggleSideBar = () => {
-    console.log('toggleSideBar', isFold)
     if(isFold === null) {
       setIsFold(true)
     } else {
@@ -166,7 +115,6 @@ const Root: FC = () => {
       <SigmaContainer graph={graph} settings={sigmaSettings} className={ isFold ? 'fold-sider-bar' : '' }>
         <GraphSettingsController hoveredNode={hoveredNode} />
         <GraphEventsController setHoveredNode={setHoveredNode} />
-        <GraphDataController filters={filtersState} />
 
         {dataReady && (
           <>
@@ -186,10 +134,6 @@ const Root: FC = () => {
                   <BsChevronLeft className="icon-fold" />
                 </button>
               </div>
-              {/* <FullScreenControl className="ico"> */}
-                {/* <BsArrowsFullscreen />
-                <BsFullscreenExit /> */}
-              {/* </FullScreenControl> */}
 
               <ZoomControl className="ico">
                 <BsZoomIn />
@@ -208,51 +152,8 @@ const Root: FC = () => {
                   <GrClose />
                 </button>
               </div>
-              {/* <GraphTitle filters={filtersState} /> */}
-
               <SideBar isFold={isFold} node={hoveredNode} onToggleTable={(flag) => onToggleTable(flag)} />
               <DataTable isShow={isShow} />
-
-              {/* <div className="panels"> */}
-
-                {/* <PanelHeader /> */}
-                {/* <SearchField filters={filtersState} /> */}
-                {/* <DescriptionPanel /> */}
-                {/* <ClustersPanel
-                  clusters={dataset.clusters}
-                  filters={filtersState}
-                  setClusters={(clusters) =>
-                    setFiltersState((filters) => ({
-                      ...filters,
-                      clusters,
-                    }))
-                  }
-                  toggleCluster={(cluster) => {
-                    setFiltersState((filters) => ({
-                      ...filters,
-                      clusters: filters.clusters[cluster]
-                        ? omit(filters.clusters, cluster)
-                        : { ...filters.clusters, [cluster]: true },
-                    }));
-                  }}
-                /> */}
-                {/* <TagsPanel
-                  tags={dataset.tags}
-                  filters={filtersState}
-                  setTags={(tags) =>
-                    setFiltersState((filters) => ({
-                      ...filters,
-                      tags,
-                    }))
-                  }
-                  toggleTag={(tag) => {
-                    setFiltersState((filters) => ({
-                      ...filters,
-                      tags: filters.tags[tag] ? omit(filters.tags, tag) : { ...filters.tags, [tag]: true },
-                    }));
-                  }}
-                /> */}
-              {/* </div> */}
             </div>
           </>
         )}
