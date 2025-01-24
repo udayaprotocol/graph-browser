@@ -3,10 +3,15 @@ import { FC, useState, useEffect } from "react";
 import { useSigma } from "@react-sigma/core";
 import { Attributes } from "graphology-types";
 import { BsChevronCompactDown, BsSearch } from "react-icons/bs";
-// import TextField from '@mui/material/TextField';
-// import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import { NodeData } from "../../types";
 import './Search.less'
+
+const kindOptions = [
+    { label: 'A', value: 'a' },
+    { label: 'B', value: 'b' },
+]
 
 const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }) => {
     const sigma = useSigma();
@@ -21,9 +26,9 @@ const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }
     const [selected, setSelected] = useState<string | null>(null);
 
 
-    const defaultProps = {
-        options: values,
-        getOptionLabel: (option: { id: string; label: string}) => option.label,
+    const kindProps = {
+        options: kindOptions,
+        getOptionLabel: (option: { value: string, label: string}) => option.label,
     };
 
     const handleMore = () => {
@@ -106,18 +111,18 @@ const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }
             </div>
             {
                 isMore && (
-                    [
+                    <>
                         <div className="search-more">
                             {/* <BsSearch size="14px" /> */}
-                            <input className="search-input" placeholder="Kind..." />
-                            <div className={`tag ${isKind ? 'active' : ''}`} onClick={() => setIsKind(!isKind)} >Kind</div>
-                        </div>,
+                            {/* <input className="search-input" placeholder="Kind..." />
+                            <div className={`tag ${isKind ? 'active' : ''}`} onClick={() => setIsKind(!isKind)} >Kind</div> */}
+                        </div>
                         <div className="search-more">
                             {/* <BsSearch size="14px" /> */}
                             <input className="search-input" placeholder="Tag..." />
                             <div className={`tag ${isTag ? 'active' : ''}`} onClick={() => setIsTag(!isTag)}>Tag</div>
                         </div>
-                    ]
+                    </>
                 )
             }
             <div className="more-btn" onClick={handleMore}>

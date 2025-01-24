@@ -18,7 +18,7 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
 
     const onToggleTable = () => {
       setIsOpened(!isOpened)
-      openTable(!isOpened, detail.participates_in)
+      openTable(!isOpened, detail.members)
     }
 
     const exportTable = () => {
@@ -28,7 +28,7 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
           const data = [
             ['User Id', 'Lamport Id'],
           ]
-          const arr = detail.participates_in.map(itm => {
+          const arr = detail.members.map(itm => {
             return [itm.uid, itm.lamport_id]
           })
           data.push(...arr)
@@ -79,7 +79,7 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
           <div className="content">
             <div className="sidebar-table-container">
               <div className="table-item">
-                <div className="title">FOUND {detail ? (detail.participates_in ? detail.participates_in.length : 0) : 0 } RECORDS</div>
+                <div className="title">FOUND {detail ? (detail.members ? detail.members.length : 0) : 0 } RECORDS</div>
                 <div className="btn table-btn" onClick={() => onToggleTable()}>{ isOpened ? 'Close Table' : 'Open Table' }</div>
               </div>
               <div className="table-item">

@@ -8,6 +8,8 @@ import { BiBookContent } from "react-icons/bi";
 import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft, BsWallet } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
+import { Flex, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons'
 
 import { drawHover, drawLabel } from "../canvas-utils";
 import { Dataset, FiltersState } from "../types";
@@ -64,17 +66,17 @@ const Root: FC = () => {
 
   // Load data on mount:
   useEffect(() => {
-    console.log('fetching data')
+    // http://212.56.40.235:5005
     try {
-      fetch(`./all_data.json`)
+      fetch('http://212.56.40.235:5005/all_data')
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         // console.log('nodes', dataset.nodes)
         // console.log('edges', dataset.edges)
 
         const newNodes = dataset.nodes.map((node) => {
-          const min = Math.random() * 1000
-          const max = Math.random() * 2000
+          const min = Math.random() * 1500
+          const max = Math.random() * 1000
           return {...node, x: min , y: max}
         })
 
@@ -84,8 +86,12 @@ const Root: FC = () => {
             })
         });
 
-        dataset.edges.forEach(({source, target}) => {
-          graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
+        dataset.edges.forEach(({source, target, category}) => {
+          // if(category === 'invite') {
+          //   graph.addEdge(source, target, { size: 1, color: '#5ad0dd' })
+          // } else {
+            graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
+          // }
         });
 
         graph.forEachNode((node, attrs) => {
@@ -113,7 +119,13 @@ const Root: FC = () => {
     }
   }
 
-  if (!dataset) return null;
+  if (!dataset) return (
+    <div className="app-container">
+      <Flex align="center" gap="middle">
+        <Spin indicator={<LoadingOutlined  style={{ fontSize: 48, color: '#eee' }} spin />} />
+      </Flex>
+    </div>
+  );
 
   return (
     <div id="app-root" className={showContents ? "show-contents" : ""}>

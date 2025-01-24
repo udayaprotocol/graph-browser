@@ -37,6 +37,7 @@ export interface UserEdge {
   uid: string;
   source: string;
   target: string;
+  category: string;
 }
 
 export interface ProjectNode {

@@ -33,7 +33,7 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
             graph.hasEdge(node, debouncedHoveredNode) ||
             graph.hasEdge(debouncedHoveredNode, node)
             ? { ...data, zIndex: 1 }
-            : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false };
+            : { ...data, zIndex: 1, label: "111", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false };
         }
         return data;
       },

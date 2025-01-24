@@ -20,8 +20,10 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
       // UX, because of the visible nodes bar width transition.
       setDetail(nodeData.detail);
       const neighbors = graph.neighbors(nodeData.uid);
+      console.log('nei', neighbors)
       setInputLinks(neighbors.length);
       setOutputLinks(graph.degree(nodeData.uid));
+      
       requestAnimationFrame(() => {
         const index = { nodes: 0, edges: 0 };
         graph.forEachNode((_, { hidden }) => !hidden && index.nodes++);
@@ -115,7 +117,7 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
                   </div>
                 </div>
                 <div className="section event">
-                  <div className="title">Application</div>
+                  <div className="section-title">Application</div>
                   <div className="content">
                     {
                       detail?.participates_in && detail?.participates_in.map((item: any, index: number) => {
