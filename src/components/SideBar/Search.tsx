@@ -35,6 +35,9 @@ const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }
         const lcSearch = address?.toLowerCase();
         if(address.length > 1) {
             sigma.getGraph().forEachNode((key: string, attributes: Attributes): void => {
+                console.log('node-attrs', attributes)
+                const detail = attributes.detail
+                console.log('detail==>', detail)
                 if(!attributes.hidden && attributes.label && attributes.label.toLowerCase().indexOf(lcSearch) === 0) {
                     newValues.push({ id: key, label: attributes.label });
                 }
@@ -66,7 +69,6 @@ const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }
         const searchString = e.target.value;
         const valueItem = values.find((value) => value.label === searchString);
         if(valueItem) {
-            const nodeElement = document.querySelector(`[data-node-id="${valueItem.id}"]`);
             setAddress(valueItem.label);
             setValues([]);
             setSelected(valueItem.id);

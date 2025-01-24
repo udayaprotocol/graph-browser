@@ -40,13 +40,43 @@
       flex: 1;
       margin-top: 20px;
       margin-bottom: 20px;
+      .section {
+        margin-bottom: 25px;
+        .section-title {
+          font-weight: 700;
+          font-size: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+          svg {
+            cursor: pointer;
+            // color: #606bb1;
+          }
+          .btn {
+            height: 28px;
+            background: #606bb1;
+            font-size: 10px;
+            color: #fff;
+            cursor: pointer;
+          }
+        }
+        .user-list {
+          padding-left: 40px;
+          display: flex;
+          font-weight: 100;
+        }
+      }
       .item {
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
         color: white;
-        font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
+        font-size: 12px;
+        .label {
+          opacity: 0.55;
+        }
         .value {
           width: 150px;
           text-align: right;
@@ -79,7 +109,7 @@
         margin-top: 10px;
       }
       .e-tag {
-        width: 200px;
+        width: 120px;
         height: 40px;
         margin-right: 20px;
         border-radius: 30px;

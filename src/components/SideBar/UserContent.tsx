@@ -1,13 +1,10 @@
 import { useSigma } from "@react-sigma/core";
 import { FC, useEffect, useState } from "react";
 import './userContent.less'
-import { BsCopy } from "react-icons/bs";
+import { BsCopy, BsTable } from "react-icons/bs";
 import { useCopyToClipboard } from 'react-use'
 
-
-// import { FiltersState } from "../../types";
-
-const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
+const UserContent :FC<{ nodeData: any, onShowTable: () => void }> = ({  nodeData, onShowTable }) => {
 
     const sigma = useSigma();
     const graph = sigma.getGraph();
@@ -17,8 +14,6 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
     const [detail, setDetail] = useState<any>(null);
     const [text, setText] = useState('');
     const [state, copyToClipboard] = useCopyToClipboard();
-
-    console.log('node-data', nodeData)
     useEffect(() => {
       // To ensure the graphology instance has up to data "hidden" values for
       // nodes, we wait for next frame before reindexing. This won't matter in the
@@ -53,73 +48,87 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
             </div>
           </div>
           <div className="border-bottom"></div>
-          <div className="node-info">
-          <div className="item">
-            <label className="label">Invite</label>
-            {detail && detail?.invite && detail?.invite.map((item: any, index: number) => {
-              // 判断是否为最后一个元素
-              const shouldAppendSlash = index < detail.invite.length - 1;
-              return (
-                <span key={index} className="value">
-                  {item.lamport_id}
-                  {shouldAppendSlash && '、'}
-                </span>
-              );
-            })}
-            { detail && !detail.invite && '-'}
-          </div>
-            {/* <div className="item">
-              <label className="label">Points</label>
-              <span className="value">{nodeData.points}</span>
-            </div> */}
-            <div className="item">
-              <label className="label">ETH</label>
-              <div className="value flex">
-                <div className="address" title={detail?.eth_address}>
-                  {detail && detail.eth_address}
+          {
+            detail ? (
+              <div className="node-info">
+                <div className="section invite">
+                  <div className="section-title">
+                    <span>Invite</span>
+                    <button className="btn">
+                      <span title="show more data" onClick={() => onShowTable()}>Open Table</span>
+                      {/* <BsTable /> */}
+                    </button>
+                  </div>
+                  {
+                    detail?.invite ? (
+                      detail?.invite.map((item: any, index: number) => {
+                        return (
+                          <div className="user-list">
+                            <span style={{marginRight: 10, opacity: 0.55}}>user</span>
+                            <span style={{marginRight: 10}}>{item.lamport_id}</span>
+                            <span style={{width: 100, marginRight: 10, flex: 1, opacity: 0.55, textAlign: 'center'}}>join in project </span>
+                            <span>{item.facets.project_name}</span>
+                          </div>
+                        );
+                      })
+                    ) : '-'
+                  }
                 </div>
-                { detail?.eth_address ? <BsCopy onClick={() => copyToClipboard(detail.eth_address)} /> : '-' }
+                <div className="section">
+                  <div className="section-title">
+                    <span>User</span>
+                  </div>
+                  <div className="item">
+                    <label className="label">Eth</label>
+                    <div className="value flex">
+                      <div className="address" title={detail?.eth_address}>
+                        {detail.eth_address}
+                      </div>
+                      { detail?.eth_address ? <BsCopy onClick={() => copyToClipboard(detail.eth_address)} /> : '-' }
+                    </div>
+                  </div>
+                  <div className="item">
+                    <label className="label">Public Key</label>
+                    <div className="value flex">
+                      <div className="address" title={detail?.pubkey}>
+                        {detail.pubkey}
+                      </div>
+                      { detail?.pubkey ? <BsCopy onClick={() => copyToClipboard(detail.pubkey)}  /> : '-' }
+                    </div>
+                  </div>
+                  <div className="item">
+                    <label className="label">X</label>
+                    <span className="value">{detail?.twitter_id || '-'}</span>
+                  </div>
+                  <div className="item">
+                    <label className="label">Event Nodes</label>
+                    <span className="value">{detail.event_type.length}</span>
+                  </div>
+                  <div className="item">
+                    <label className="label">ID</label>
+                    <span className="value flex">
+                      <div className="address">
+                        {nodeData.uid}
+                      </div>
+                      <BsCopy onClick={() => copyToClipboard(nodeData.uid)} />
+                    </span>
+                  </div>
+                </div>
+                <div className="section event">
+                  <div className="title">Application</div>
+                  <div className="content">
+                    {
+                      detail?.participates_in && detail?.participates_in.map((item: any, index: number) => {
+                        return (
+                          <div key={index} className="e-tag">{item.project_name}</div>
+                        )
+                      })
+                    } 
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="item">
-              <label className="label">Public Key</label>
-              <div className="value flex">
-                <div className="address" title={detail?.pubkey}>
-                  {detail && detail.pubkey}
-                </div>
-                { detail?.pubkey ? <BsCopy onClick={() => copyToClipboard(detail.pubkey)}  /> : '-' }
-              </div>
-            </div>
-            <div className="item">
-              <label className="label">X</label>
-              <span className="value">{detail?.twitter_id || '-'}</span>
-            </div>
-            <div className="item">
-              <label className="label">Event Nodes</label>
-              <span className="value">{detail && detail.event_type.length}</span>
-            </div>
-            <div className="item">
-              <label className="label">ID</label>
-              <span className="value flex">
-                <div className="address">
-                  {nodeData.uid}
-                </div>
-                <BsCopy onClick={() => copyToClipboard(nodeData.uid)} />
-              </span>
-            </div>
-          </div>
-          <div className="event">
-            <div className="title">Application</div>
-            <div className="content">
-              {
-                detail && detail?.participates_in && detail?.participates_in.map((item: any, index: number) => {
-                  return (
-                    <div key={index} className="e-tag">{item.project_name}</div>
-                  )
-                })
-              } 
-            </div>
-          </div>
+            ) : null
+          }
         </>
     )
 }

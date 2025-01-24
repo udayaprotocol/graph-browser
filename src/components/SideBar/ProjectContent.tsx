@@ -17,7 +17,6 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
     const [detail, setDetail] = useState<any>(null);
 
     const onToggleTable = () => {
-      console.log('onToggleTable', isOpened)
       setIsOpened(!isOpened)
       openTable(!isOpened, detail.participates_in)
     }
@@ -80,7 +79,7 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
           <div className="content">
             <div className="sidebar-table-container">
               <div className="table-item">
-                <div className="title">FOUND {userNode} RECORDS</div>
+                <div className="title">FOUND {detail ? (detail.participates_in ? detail.participates_in.length : 0) : 0 } RECORDS</div>
                 <div className="btn table-btn" onClick={() => onToggleTable()}>{ isOpened ? 'Close Table' : 'Open Table' }</div>
               </div>
               <div className="table-item">

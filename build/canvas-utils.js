@@ -29,8 +29,8 @@ function drawHover(context, data, settings) {
     const weight = settings.labelWeight;
     const subLabelSize = size - 2;
     const label = data.label;
-    const subLabel = data.tag !== "unknown" ? data.tag : "";
-    const clusterLabel = data.clusterLabel;
+    const subLabel = "";
+    const clusterLabel = "";
     context.beginPath();
     context.fillStyle = "#fff";
     context.shadowOffsetX = 0;
@@ -65,15 +65,7 @@ function drawHover(context, data, settings) {
     context.shadowBlur = 0;
     context.fillStyle = TEXT_COLOR;
     context.font = `${weight} ${size}px ${font}`;
-    context.fillText(label, x - w / 2 + data.size + 3 - data.size / 2, rectY + size / 3);
-    if (subLabel) {
-        context.fillStyle = TEXT_COLOR;
-        context.font = `${weight} ${subLabelSize}px ${font}`;
-        context.fillText(subLabel, x - w / 2 + data.size + 3 - data.size / 2, rectY - (2 * size) / 3 - 2);
-    }
-    context.fillStyle = data.color;
-    context.font = `${weight} ${subLabelSize}px ${font}`;
-    context.fillText(clusterLabel, x - w / 2 + data.size + 3 - data.size / 2, rectY + size / 3 + 3 + subLabelSize);
+    context.fillText(label, x - w / 2 + data.size + 3 - data.size / 2, rectY + size);
 }
 function drawLabel(context, data, settings) {
     if (!data.label)
