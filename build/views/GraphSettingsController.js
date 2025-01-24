@@ -24,7 +24,7 @@ const GraphSettingsController = ({ children, hoveredNode }) => {
                     return node === debouncedHoveredNode ||
                         graph.hasEdge(node, debouncedHoveredNode) ||
                         graph.hasEdge(debouncedHoveredNode, node)
-                        ? Object.assign(Object.assign({}, data), { zIndex: 1 }) : Object.assign(Object.assign({}, data), { zIndex: 0, label: "", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false });
+                        ? Object.assign(Object.assign({}, data), { zIndex: 1 }) : Object.assign(Object.assign({}, data), { zIndex: 1, label: "111", color: NODE_FADE_COLOR, alpha: 0.1, image: null, highlighted: false });
                 }
                 return data;
             },

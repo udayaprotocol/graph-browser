@@ -68,7 +68,7 @@ const Root: FC = () => {
   useEffect(() => {
     // http://212.56.40.235:5005
     try {
-      fetch('http://212.56.40.235:5005/all_data')
+      fetch('https://212.56.40.235:5005/all_data')
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         // console.log('nodes', dataset.nodes)

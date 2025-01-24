@@ -9,6 +9,8 @@ const react_1 = require("react");
 const bi_1 = require("react-icons/bi");
 const bs_1 = require("react-icons/bs");
 const gr_1 = require("react-icons/gr");
+const antd_1 = require("antd");
+const icons_1 = require("@ant-design/icons");
 const canvas_utils_1 = require("../canvas-utils");
 const GraphEventsController_1 = tslib_1.__importDefault(require("./GraphEventsController"));
 const GraphSettingsController_1 = tslib_1.__importDefault(require("./GraphSettingsController"));
@@ -46,20 +48,19 @@ const Root = () => {
         setTableData(data);
     };
     (0, react_1.useEffect)(() => {
-        console.log('fetching data');
         try {
-            fetch(`./all_data.json`)
+            fetch('http://212.56.40.235:5005/all_data')
                 .then((res) => res.json())
                 .then((dataset) => {
                 const newNodes = dataset.nodes.map((node) => {
-                    const min = Math.random() * 1000;
-                    const max = Math.random() * 2000;
+                    const min = Math.random() * 1500;
+                    const max = Math.random() * 1000;
                     return Object.assign(Object.assign({}, node), { x: min, y: max });
                 });
                 newNodes.forEach((node) => {
                     graph.addNode(node.uid, Object.assign({}, node));
                 });
-                dataset.edges.forEach(({ source, target }) => {
+                dataset.edges.forEach(({ source, target, category }) => {
                     graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' });
                 });
                 graph.forEachNode((node, attrs) => {
@@ -88,7 +89,7 @@ const Root = () => {
         }
     };
     if (!dataset)
-        return null;
+        return ((0, jsx_runtime_1.jsx)("div", { className: "app-container", children: (0, jsx_runtime_1.jsx)(antd_1.Flex, { align: "center", gap: "middle", children: (0, jsx_runtime_1.jsx)(antd_1.Spin, { indicator: (0, jsx_runtime_1.jsx)(icons_1.LoadingOutlined, { style: { fontSize: 48, color: '#eee' }, spin: true }) }) }) }));
     return ((0, jsx_runtime_1.jsx)("div", { id: "app-root", className: showContents ? "show-contents" : "", children: (0, jsx_runtime_1.jsxs)(core_1.SigmaContainer, { graph: graph, settings: sigmaSettings, className: isFold ? 'fold-sider-bar' : '', children: [(0, jsx_runtime_1.jsx)(GraphSettingsController_1.default, { hoveredNode: hoveredNode }), (0, jsx_runtime_1.jsx)(GraphEventsController_1.default, { setHoveredNode: setHoveredNode }), dataReady && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)("div", { className: "pages", children: (0, jsx_runtime_1.jsx)("span", { children: "Page 1" }) }), (0, jsx_runtime_1.jsxs)("div", { className: "wallet", children: [(0, jsx_runtime_1.jsx)(bs_1.BsWallet, {}), (0, jsx_runtime_1.jsx)("button", { className: "btn", children: "Connect Wallet" })] }), (0, jsx_runtime_1.jsxs)("div", { className: "controls", children: [(0, jsx_runtime_1.jsx)("div", { className: "react-sigma-control ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "show-contents", onClick: () => setShowContents(true), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(bi_1.BiBookContent, {}) }) }), (0, jsx_runtime_1.jsx)("div", { className: "ico fold-btn", children: (0, jsx_runtime_1.jsx)("button", { onClick: () => toggleSideBar(), children: (0, jsx_runtime_1.jsx)(bs_1.BsChevronLeft, { className: "icon-fold" }) }) }), (0, jsx_runtime_1.jsxs)(core_1.ZoomControl, { className: "ico", children: [(0, jsx_runtime_1.jsx)(bs_1.BsZoomIn, {}), (0, jsx_runtime_1.jsx)(bs_1.BsZoomOut, {}), (0, jsx_runtime_1.jsx)(bs_1.BsArrowsFullscreen, {})] })] }), (0, jsx_runtime_1.jsxs)("div", { className: "sigma-contents", children: [(0, jsx_runtime_1.jsx)("div", { className: "ico", children: (0, jsx_runtime_1.jsx)("button", { type: "button", className: "ico hide-contents", onClick: () => setShowContents(false), title: "Show caption and description", children: (0, jsx_runtime_1.jsx)(gr_1.GrClose, {}) }) }), (0, jsx_runtime_1.jsx)(SideBar_1.default, { isFold: isFold, node: hoveredNode, onToggleTable: (flag, data) => onToggleTable(flag, data) }), (0, jsx_runtime_1.jsx)(DataTable_1.default, { isShow: isShow, data: tableData })] })] }))] }) }));
 };
 exports.default = Root;
