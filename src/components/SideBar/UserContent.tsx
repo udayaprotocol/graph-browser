@@ -4,7 +4,7 @@ import './userContent.less'
 import { BsCopy, BsTable } from "react-icons/bs";
 import { useCopyToClipboard } from 'react-use'
 
-const UserContent :FC<{ nodeData: any, onShowTable: () => void }> = ({  nodeData, onShowTable }) => {
+const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
 
     const sigma = useSigma();
     const graph = sigma.getGraph();
@@ -55,7 +55,7 @@ const UserContent :FC<{ nodeData: any, onShowTable: () => void }> = ({  nodeData
                   <div className="section-title">
                     <span>Invite</span>
                     <button className="btn">
-                      <span title="show more data" onClick={() => onShowTable()}>Open Table</span>
+                      <span title="show more data">Open Table</span>
                       {/* <BsTable /> */}
                     </button>
                   </div>
