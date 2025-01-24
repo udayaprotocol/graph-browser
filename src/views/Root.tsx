@@ -1,11 +1,11 @@
 import { SigmaContainer, ZoomControl } from "@react-sigma/core";
 // import { createNodeImageProgram } from "@sigma/node-image";
 import EdgeCurveProgram  from '@sigma/edge-curve'
-import { DirectedGraph } from "graphology";
+import { DirectedGraph, MultiGraph } from "graphology";
 import { constant, keyBy, mapValues, omit } from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
 import { BiBookContent } from "react-icons/bi";
-import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft } from "react-icons/bs";
+import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft, BsWallet } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
 
@@ -27,7 +27,7 @@ const ProjectColor = 'rgba(194, 160, 190, 0.7)'
 
 
 const Root: FC = () => {
-  const graph = useMemo(() => new DirectedGraph(), []);
+  const graph = useMemo(() => new MultiGraph(), []);
   // const sigmaRef = useRef(null)
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
@@ -39,6 +39,7 @@ const Root: FC = () => {
   });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [isShow, setIsShow] = useState<boolean>(false);
+  const [tableData, setTableData] = useState([]);
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
       edgeProgramClasses: { curve: EdgeCurveProgram, },
@@ -55,16 +56,17 @@ const Root: FC = () => {
     [],
   );
 
-  const onToggleTable = (isOpened: boolean) => {
-    console.log('onToggleTable', isOpened)
+  const onToggleTable = (isOpened: boolean, data: any) => {
+    console.log('onToggleTable', data)
     setIsShow(isOpened)
+    setTableData(data)
   }
 
   // Load data on mount:
   useEffect(() => {
     console.log('fetching data')
     try {
-      fetch(`./all_users.json`)
+      fetch(`./all_data.json`)
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         // console.log('nodes', dataset.nodes)
@@ -77,8 +79,7 @@ const Root: FC = () => {
         })
 
         newNodes.forEach((node) => {
-          console.log('node', node.id)
-            graph.addNode(node.id, {
+            graph.addNode(node.uid, {
               ...node
             })
         });
@@ -89,7 +90,11 @@ const Root: FC = () => {
 
         graph.forEachNode((node, attrs) => {
           graph.setNodeAttribute(node,"size",10);
-          graph.setNodeAttribute(node,"color",'rgba(73, 94, 152, 0.7)');
+          if (attrs.category === 'User') {
+            graph.setNodeAttribute(node,"color",'rgba(73, 94, 152, 0.7)');
+          } else {
+            graph.setNodeAttribute(node,"color",ProjectColor);
+          }
         });
 
         setDataset(dataset);
@@ -118,6 +123,13 @@ const Root: FC = () => {
 
         {dataReady && (
           <>
+            <div className="pages">
+              <span>Page 1</span>
+            </div>
+            <div className="wallet">
+              <BsWallet />
+              <button className="btn">Connect Wallet</button>
+            </div>
             <div className="controls">
               <div className="react-sigma-control ico">
                 <button
@@ -152,8 +164,8 @@ const Root: FC = () => {
                   <GrClose />
                 </button>
               </div>
-              <SideBar isFold={isFold} node={hoveredNode} onToggleTable={(flag) => onToggleTable(flag)} />
-              <DataTable isShow={isShow} />
+              <SideBar isFold={isFold} node={hoveredNode} onToggleTable={(flag, data) => onToggleTable(flag, data)} />
+              <DataTable isShow={isShow} data={tableData} />
             </div>
           </>
         )}

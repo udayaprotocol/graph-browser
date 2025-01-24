@@ -28,6 +28,10 @@ body {
   font-size: 14px;
   overflow: hidden;
 }
+p {
+  padding: 0;
+  margin: 0;
+}
 h1,
 h2 {
   font-family: Lora, serif;
@@ -88,13 +92,33 @@ body {
   animation-fill-mode: both;
 }
 
-.controls {
+.pages {
   position: absolute;
   left: 330px;
   top: 20px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
 }
 
-.fold-sider-bar .controls {
+.wallet {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.controls {
+  position: absolute;
+  left: 330px;
+  top: 50px;
+}
+
+.fold-sider-bar .controls, .fold-sider-bar .pages {
   left: 10px;
 }
 
@@ -104,7 +128,7 @@ body {
 }
 
 
-.open-sider-bar .controls {
+.open-sider-bar .controls,.open-sider-bar .pages {
   left: 330px;
 }
 
@@ -386,6 +410,10 @@ ul > li {
   height: 1em;
   top: 1em;
   left: 1em;
+}
+
+button.btn {
+  border: none;
 }
 
 /**

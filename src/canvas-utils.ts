@@ -53,8 +53,8 @@ export function drawHover(context: CanvasRenderingContext2D, data: PlainObject, 
   const subLabelSize = size - 2;
 
   const label = data.label;
-  const subLabel = data.tag !== "unknown" ? data.tag : "";
-  const clusterLabel = data.clusterLabel;
+  const subLabel = "";
+  const clusterLabel = "";
 
   // Then we draw the label background
   context.beginPath();
@@ -101,17 +101,17 @@ export function drawHover(context: CanvasRenderingContext2D, data: PlainObject, 
   // And finally we draw the labels
   context.fillStyle = TEXT_COLOR;
   context.font = `${weight} ${size}px ${font}`;
-  context.fillText(label, x - w/2 + data.size + 3 - data.size/2, rectY + size / 3);
+  context.fillText(label, x - w/2 + data.size + 3 - data.size/2, rectY + size);
 
-  if (subLabel) {
-    context.fillStyle = TEXT_COLOR;
-    context.font = `${weight} ${subLabelSize}px ${font}`;
-    context.fillText(subLabel, x - w/2 + data.size + 3 - data.size/2, rectY  - (2 * size) / 3 - 2);
-  }
+  // if (subLabel) {
+  //   context.fillStyle = TEXT_COLOR;
+  //   context.font = `${weight} ${subLabelSize}px ${font}`;
+  //   context.fillText(subLabel, x - w/2 + data.size + 3 - data.size/2, rectY  - (2 * size) / 3 - 2);
+  // }
 
-  context.fillStyle = data.color;
-  context.font = `${weight} ${subLabelSize}px ${font}`;
-  context.fillText(clusterLabel, x - w/2 + data.size + 3 - data.size/2, rectY + size / 3 + 3 + subLabelSize);
+  // context.fillStyle = data.color;
+  // context.font = `${weight} ${subLabelSize}px ${font}`;
+  // context.fillText(clusterLabel, x - w/2 + data.size + 3 - data.size/2, rectY + size / 3 + 3 + subLabelSize);
 }
 
 /**

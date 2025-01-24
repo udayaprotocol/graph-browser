@@ -8,7 +8,7 @@ import { isUser, isProject } from '../../utils'
 
 import './index.less'
 // import { TextField } from "@mui/material";
-const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null,  onToggleTable: (isOpened: boolean) => void }>> = ({ node: selectedNode, isFold: fold, onToggleTable }) => {
+const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null,  onToggleTable: (isOpened: boolean, data: any) => void }>> = ({ node: selectedNode, isFold: fold, onToggleTable }) => {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const [nodeType, setNodeType] = useState<string | null>(null)
@@ -21,7 +21,8 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
     // 搜索或点击时设置Active
     if(selectedNode || selected){
       const attrs = graph.getNodeAttributes(selectedNode || selected)
-      setNodeType(isUser(attrs.tag) ? 'User' : isProject(attrs.tag) ? 'Event' : null)
+      console.log('attr', attrs)
+      setNodeType(attrs.category)
       setNodeData(attrs)
     }
   }, [selectedNode, selected])
@@ -48,7 +49,7 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
         {
           (selectedNode || selected) ? (
             nodeType === 'User' ? <UserContent nodeData={nodeData} /> : 
-            nodeType === 'Event' ? <ProjectContent nodeData={nodeData} openTable={(flag) => onToggleTable(flag)} /> : null
+            nodeType === 'Project' ? <ProjectContent nodeData={nodeData} openTable={(flag, data) => onToggleTable(flag, data)} /> : null
           ) :
           <div className="empty">Select or find a node to show information</div>
         }

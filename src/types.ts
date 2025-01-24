@@ -8,22 +8,53 @@ export interface NodeData {
   y: number;
 }
 
-export interface UserNode {
+export interface UserInvite {
+  lamport_id: string;
+  uid: string;
+  facets: {content: string,created_at: string,project_name: string};
+}
+
+export interface UserDetail {
   content: string;
   created_at: string;
-  id: string;
-  label: string;
+  eth_address: string;
+  event_type: string[];
+  invite: UserInvite[];
   lamport_id: string;
-  pubkey: string | null;
+  participates_in: {project_name: string, uid: string}[];
+  pubkey: string;
+  twitter_id: string;
+}
+
+export interface UserNode {
   category: string;
+  detail: any;
+  label: string;
+  uid: string;
 }
 
 export interface UserEdge {
-  id: string;
-  label: string;
+  uid: string;
   source: string;
   target: string;
+}
+
+export interface ProjectNode {
   category: string;
+  content: string;
+  created_at: string;
+  detail: ProjectDetail;
+  label: string;
+  uid: string;
+}
+
+export interface ProjectDetail {
+  event_count: number;
+  event_type: string[];
+  records_count: number;
+  participates_in?: {lamport_id: string, uid: string}[];
+  user_count: number;
+
 }
 
 // export interface NodeData {
@@ -56,7 +87,7 @@ export interface Edge {
 }
 
 export interface Dataset {
-  nodes: UserNode[];
+  nodes: UserNode[] | ProjectNode[];
   edges: UserEdge[];
   // clusters: Cluster[];
   // tags: Tag[];

@@ -48,7 +48,21 @@
         font-weight: 700;
         margin-bottom: 15px;
         .value {
+          width: 150px;
           text-align: right;
+          &.flex {
+            display: flex;
+          }
+          .address {
+            width: 150px;
+            margin-right: 5px;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          svg {
+            cursor: pointer;
+          }
         }
       }
     }
