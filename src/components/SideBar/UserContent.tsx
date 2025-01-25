@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import './userContent.less'
 import { BsCopy, BsTable } from "react-icons/bs";
 import { useCopyToClipboard } from 'react-use'
+import { message } from "antd";
 
 const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
 
@@ -12,12 +13,9 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
     const [inputLinks, setInputLinks] = useState<number>(0);
     const [outputLinks, setOutputLinks] = useState<number>(0)
     const [detail, setDetail] = useState<any>(null);
-    const [text, setText] = useState('');
     const [state, copyToClipboard] = useCopyToClipboard();
+
     useEffect(() => {
-      // To ensure the graphology instance has up to data "hidden" values for
-      // nodes, we wait for next frame before reindexing. This won't matter in the
-      // UX, because of the visible nodes bar width transition.
       setDetail(nodeData.detail);
       const neighbors = graph.neighbors(nodeData.uid);
       console.log('nei', neighbors)
@@ -32,6 +30,12 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
       });
       console.log(nodeData);
     }, [nodeData]);
+    
+    useEffect(() => {
+      if(state.value) {
+        message.success({content: 'Copied Success'})
+      }
+    },[state])
 
     return (
         <>
@@ -65,7 +69,7 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
                     detail?.invite ? (
                       detail?.invite.map((item: any, index: number) => {
                         return (
-                          <div className="user-list">
+                          <div className="user-list" key={index}>
                             <span style={{marginRight: 10, opacity: 0.55}}>user</span>
                             <span style={{marginRight: 10}}>{item.lamport_id}</span>
                             <span style={{width: 100, marginRight: 10, flex: 1, opacity: 0.55, textAlign: 'center'}}>join in project </span>

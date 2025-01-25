@@ -13,24 +13,16 @@ import { LoadingOutlined } from '@ant-design/icons'
 
 import { drawHover, drawLabel } from "../canvas-utils";
 import { Dataset, FiltersState } from "../types";
-// import ClustersPanel from "./ClustersPanel";
-// import DescriptionPanel from "./DescriptionPanel";
-import GraphDataController from "./GraphDataController";
 import GraphEventsController from "./GraphEventsController";
 import GraphSettingsController from "./GraphSettingsController";
-// import GraphTitle from "./GraphTitle";
-// import SearchField from "./SearchField";
-// import TagsPanel from "./TagsPanel";
 import SideBar from "../components/SideBar"
 import DataTable from "../components/DataTable"
-import { isUser, randomNum, randomUuid, randomEvents } from '../utils'
 
 const ProjectColor = 'rgba(194, 160, 190, 0.7)'
 
 
 const Root: FC = () => {
   const graph = useMemo(() => new MultiGraph(), []);
-  // const sigmaRef = useRef(null)
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | null>(null);
@@ -59,16 +51,15 @@ const Root: FC = () => {
   );
 
   const onToggleTable = (isOpened: boolean, data: any) => {
-    console.log('onToggleTable', data)
     setIsShow(isOpened)
     setTableData(data)
   }
 
   // Load data on mount:
   useEffect(() => {
-    // http://212.56.40.235:5005
     try {
-      fetch('https://212.56.40.235:5005/all_data')
+      // fetch('/api/all_data')
+      fetch('./all_data.json')
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         // console.log('nodes', dataset.nodes)

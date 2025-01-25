@@ -43,13 +43,12 @@ const Root = () => {
         zIndex: true,
     }), []);
     const onToggleTable = (isOpened, data) => {
-        console.log('onToggleTable', data);
         setIsShow(isOpened);
         setTableData(data);
     };
     (0, react_1.useEffect)(() => {
         try {
-            fetch('http://212.56.40.235:5005/all_data')
+            fetch('./all_data.json')
                 .then((res) => res.json())
                 .then((dataset) => {
                 const newNodes = dataset.nodes.map((node) => {
