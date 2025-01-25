@@ -156,6 +156,16 @@ const Root: FC = () => {
                 <BsArrowsFullscreen />
               </ZoomControl>
             </div>
+            <div className="node-list">
+              <div className="dot">
+                <div className="dott project"></div>
+                <span>project node</span>
+              </div>
+              <div className="dot">
+                <div className="dott user"></div>
+                <span>user node</span>
+              </div>
+            </div>
             <div className="sigma-contents">
               <div className="ico">
                 <button

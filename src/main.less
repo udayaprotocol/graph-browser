@@ -18,3 +18,29 @@
   background: hsla(0,0%,100%,.05);
   color: #fff;
 }
+
+.node-list {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  .dot {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 5px;
+    span {
+      color: white;
+      opacity: 0.55;
+    }
+    .dott {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+      background: rgba(73, 94, 152, 1);
+      &.project {
+        background: rgba(194, 160, 190, 1); 
+      }
+    }
+  }
+}
