@@ -36,7 +36,7 @@ const DataTable : FC<{isShow: boolean, data: any}> = ({isShow, data}) => {
   useEffect(() => {
     if(inputVal){
       if(gridData){
-        const filterData = gridData.filter(itm => {
+        const filterData = gridData.filter((itm: any) => {
           return itm.uid.includes(inputVal) || itm.lamport_id.includes(inputVal)
         })  
         setGridData(filterData)
