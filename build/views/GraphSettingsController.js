@@ -30,8 +30,19 @@ const GraphSettingsController = ({ children, hoveredNode }) => {
             },
             edgeReducer: (edge, data) => {
                 if (debouncedHoveredNode) {
-                    return graph.hasExtremity(edge, debouncedHoveredNode)
-                        ? Object.assign(Object.assign({}, data), { color: hoveredColor, size: 4 }) : Object.assign(Object.assign({}, data), { color: EDGE_FADE_COLOR, hidden: true });
+                    const targetEdge = graph.hasExtremity(edge, debouncedHoveredNode);
+                    if (targetEdge) {
+                        const type = edge.split('-')[0];
+                        if (type === 'invite') {
+                            return Object.assign(Object.assign({}, data), { color: '#f00', size: 4 });
+                        }
+                        else {
+                            return Object.assign(Object.assign({}, data), { color: hoveredColor, size: 4 });
+                        }
+                    }
+                    else {
+                        return Object.assign(Object.assign({}, data), { color: EDGE_FADE_COLOR, hidden: true });
+                    }
                 }
                 return data;
             },
@@ -52,9 +63,25 @@ const GraphSettingsController = ({ children, hoveredNode }) => {
                 }
             } : null);
         sigma.setSetting("edgeReducer", debouncedHoveredNode
-            ? (edge, data) => graph.hasExtremity(edge, debouncedHoveredNode)
-                ? Object.assign(Object.assign({}, data), { color: hoveredColor, size: 2 }) : Object.assign(Object.assign({}, data), { color: EDGE_FADE_COLOR, hidden: true })
-            : null);
+            ? (edge, data) => {
+                const target = graph.hasExtremity(edge, debouncedHoveredNode);
+                if (target) {
+                    const type = edge.split('-')[0];
+                    console.log('type', type);
+                    if (type === 'invite') {
+                        return Object.assign(Object.assign({}, data), { color: '#40c6dd', size: 2 });
+                    }
+                    else if (type === 'members') {
+                        return Object.assign(Object.assign({}, data), { color: '#b9326f', size: 2 });
+                    }
+                    else {
+                        return Object.assign(Object.assign({}, data), { color: hoveredColor, size: 2 });
+                    }
+                }
+                else {
+                    return Object.assign(Object.assign({}, data), { color: EDGE_FADE_COLOR, hidden: true });
+                }
+            } : null);
     }, [debouncedHoveredNode]);
     return (0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: children });
 };
