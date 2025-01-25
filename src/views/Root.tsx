@@ -63,8 +63,8 @@ const Root: FC = () => {
   // Load data on mount:
   useEffect(() => {
     try {
-      fetch('/api/all_data')
-      // fetch('./all_data.json')
+      // fetch('/api/all_data')
+      fetch('./all_data.json')
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         // console.log('nodes', dataset.nodes)
