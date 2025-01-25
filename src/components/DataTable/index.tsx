@@ -15,31 +15,44 @@ const darkTheme = createTheme({
   },
 });
 
-const columns: GridColDef[] = [
+const projectCols: GridColDef[] = [
   { field: 'uid', headerName: 'User Id' },
   { field: 'lamport_id', headerName: 'Lamport Id', minWidth: 150 },
 ];
 
+const inviteCols: GridColDef[] = [
+  { field: 'uid', headerName: 'User Id' },
+  { field: 'lamport_id', headerName: 'Invited Lamport Id', minWidth: 150 },
+  { field: 'content', headerName: 'Invitation content', minWidth: 150 },
+  { field: 'project_name', headerName: 'project_name', minWidth: 150 },
+];
+
 const paginationModel = { page: 0, pageSize: 15 };
 
-const DataTable : FC<{isShow: boolean, data: any}> = ({isShow, data}) => {
+const DataTable : FC<{isShow: boolean, data: any, type: string | null}> = ({isShow, data, type}) => {
   const [inputVal, setInputVal] = React.useState('');
   const [gridData, setGridData] = useState([])
-  console.log('gr', data)
+  const [columns, setColumns] = useState<GridColDef[]>([])
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setInputVal(val);
-    
   }
 
   useEffect(() => {
     if(inputVal){
       if(gridData){
-        const filterData = gridData.filter((itm: any) => {
-          return itm.uid.includes(inputVal) || itm.lamport_id.includes(inputVal)
-        })  
-        setGridData(filterData)
+        if(type === 'Project') {
+          const filterData = gridData.filter((itm: any) => {
+            return itm.uid.includes(inputVal) || itm.lamport_id.includes(inputVal)
+          })  
+          setGridData(filterData)
+        } else if (type === 'Invite') {
+          const filterData = gridData.filter((itm: any) => {
+            return itm.uid.includes(inputVal) || itm.lamport_id.includes(inputVal) || itm.project_name.includes(inputVal) || itm.content.includes(inputVal)
+          })  
+          setGridData(filterData)
+        }
       }
     } else {
       setGridData(data)
@@ -48,7 +61,15 @@ const DataTable : FC<{isShow: boolean, data: any}> = ({isShow, data}) => {
 
   useEffect(() => {
     setGridData(data)
-  }, [data])
+  }, [data, type])
+
+  useEffect(() => {
+    if (type === 'Project') {
+      setColumns(projectCols)
+    } else if (type === 'Invite') {
+      setColumns(inviteCols)
+    }
+  }, [type])
 
   return (
     <ThemeProvider theme={darkTheme}>

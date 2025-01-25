@@ -33,6 +33,8 @@ const Root: FC = () => {
   });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [isShow, setIsShow] = useState<boolean>(false);
+  // user || project
+  const [curCategory, setCurCategory] = useState<string | null>(null)
   const [tableData, setTableData] = useState([]);
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
@@ -50,9 +52,10 @@ const Root: FC = () => {
     [],
   );
 
-  const onToggleTable = (isOpened: boolean, data: any) => {
+  const onToggleTable = (isOpened: boolean, data: any, type: string | null) => {
     setIsShow(isOpened)
     setTableData(data)
+    setCurCategory(type)
   }
 
   // Load data on mount:
@@ -177,8 +180,8 @@ const Root: FC = () => {
                   <GrClose />
                 </button>
               </div>
-              <SideBar isFold={isFold} node={hoveredNode} onToggleTable={(flag, data) => onToggleTable(flag, data)} />
-              <DataTable isShow={isShow} data={tableData} />
+              <SideBar isFold={isFold} node={hoveredNode} onToggleTable={(flag, data, type) => onToggleTable(flag, data, type)} />
+              <DataTable isShow={isShow} data={tableData} type={curCategory} />
             </div>
           </>
         )}

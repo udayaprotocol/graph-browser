@@ -5,20 +5,32 @@ import { BsCopy, BsTable } from "react-icons/bs";
 import { useCopyToClipboard } from 'react-use'
 import { message } from "antd";
 
-const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
+const UserContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any, type: string | null) => void }> = ({  nodeData, openTable }) => {
 
     const sigma = useSigma();
     const graph = sigma.getGraph();
-    // const [visibleItems, setVisibleItems] = useState<{ nodes: number; edges: number }>({ nodes: 0, edges: 0 });
     const [inputLinks, setInputLinks] = useState<number>(0);
     const [outputLinks, setOutputLinks] = useState<number>(0)
     const [detail, setDetail] = useState<any>(null);
     const [state, copyToClipboard] = useCopyToClipboard();
+    const [inviteList, setInviteList] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
+
+    const onOpenTable = () => {
+      setIsOpen(!isOpen)
+      const list = nodeData.detail.invite.map(itm => {
+        return { ...itm, ...itm.facets}
+      })
+      openTable(!isOpen, list, 'Invite')
+    }
 
     useEffect(() => {
       setDetail(nodeData.detail);
+      if(nodeData.detail && nodeData.detail.invite) {
+        const list = nodeData.detail.invite.slice(0, 3)
+        setInviteList(list)
+      }
       const neighbors = graph.neighbors(nodeData.uid);
-      console.log('nei', neighbors)
       setInputLinks(neighbors.length);
       setOutputLinks(graph.degree(nodeData.uid));
       
@@ -28,7 +40,6 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
         graph.forEachEdge((_, _2, _3, _4, source, target) => !source.hidden && !target.hidden && index.edges++);
         // setVisibleItems(index);
       });
-      console.log(nodeData);
     }, [nodeData]);
     
     useEffect(() => {
@@ -60,14 +71,18 @@ const UserContent :FC<{ nodeData: any }> = ({  nodeData }) => {
                 <div className="section invite">
                   <div className="section-title">
                     <span>Invite</span>
-                    <button className="btn">
-                      <span title="show more data">Open Table</span>
-                      {/* <BsTable /> */}
-                    </button>
+                    {
+                      detail.invite && (
+                        <button className="btn">
+                          <span title="show more data" onClick={() => onOpenTable()}>{`${isOpen ? 'Close Table' : 'Open Table'} `}</span>
+                          {/* <BsTable /> */}
+                        </button>
+                      )
+                    }
                   </div>
                   {
-                    detail?.invite ? (
-                      detail?.invite.map((item: any, index: number) => {
+                    inviteList.length ? (
+                      inviteList.map((item: any, index: number) => {
                         return (
                           <div className="user-list" key={index}>
                             <span style={{marginRight: 10, opacity: 0.55}}>user</span>

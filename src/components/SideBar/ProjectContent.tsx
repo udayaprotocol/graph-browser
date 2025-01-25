@@ -6,7 +6,7 @@ import { BsDownload } from "react-icons/bs";
 import { saveAs } from 'file-saver';
 // import { FiltersState } from "../../types";
 
-const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any) => void }> = ({ nodeData, openTable }) => {
+const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any, type: string | null) => void }> = ({ nodeData, openTable }) => {
 
     const sigma = useSigma();
     const graph = sigma.getGraph();
@@ -18,7 +18,7 @@ const ProjectContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: a
 
     const onToggleTable = () => {
       setIsOpened(!isOpened)
-      openTable(!isOpened, detail.members)
+      openTable(!isOpened, detail.members, 'Project')
     }
 
     const exportTable = () => {

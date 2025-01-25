@@ -8,7 +8,7 @@ import { isUser, isProject } from '../../utils'
 
 import './index.less'
 // import { TextField } from "@mui/material";
-const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null,  onToggleTable: (isOpened: boolean, data: any) => void }>> = ({ node: selectedNode, isFold: fold, onToggleTable }) => {
+const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null,  onToggleTable: (isOpened: boolean, data: any, type: string | null) => void }>> = ({ node: selectedNode, isFold: fold, onToggleTable }) => {
   const sigma = useSigma();
   const graph = sigma.getGraph();
   const [nodeType, setNodeType] = useState<string | null>(null)
@@ -48,8 +48,8 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
         <div className="border-bottom"></div>
         {
           (selectedNode || selected) ? (
-            nodeType === 'User' ? <UserContent nodeData={nodeData} /> : 
-            nodeType === 'Project' ? <ProjectContent nodeData={nodeData} openTable={(flag, data) => onToggleTable(flag, data)} /> : null
+            nodeType === 'User' ? <UserContent openTable={(flag, data, type) => onToggleTable(flag, data, type)} nodeData={nodeData} /> : 
+            nodeType === 'Project' ? <ProjectContent nodeData={nodeData} openTable={(flag, data, type) => onToggleTable(flag, data, type)} /> : null
           ) :
           <div className="empty">Select or find a node to show information</div>
         }
