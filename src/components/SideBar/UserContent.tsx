@@ -36,19 +36,6 @@ const UserContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any,
       setInputLinks(ineighbors.length);
       setOutputLinks(oneighbors.length);
 
-      // const inEdges = graph.outEdges(nodeData.uid)
-      // graph.updateEdgeAttribute(inEdges, 'color', () => 'red')
-      // console.log('ine',inEdges)
-      
-      // requestAnimationFrame(() => {
-      //   const index = { nodes: 0, edges: 0 };
-      //   graph.forEachNode((_, { hidden }) => !hidden && index.nodes++);
-      //   // graph.forEachEdge((_, _2, _3, _4, source, target) => !source.hidden && !target.hidden && index.edges++);
-      //   graph.filterOutEdges((key, attrs, _3, _4, sourceAttr, targetAttr) => {
-      //     console.log('_, _2, _3, _4', key, attrs, _3, _4)
-      //   });
-      //   // setVisibleItems(index);
-      // });
     }, [nodeData]);
     
     useEffect(() => {
@@ -77,33 +64,6 @@ const UserContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any,
           {
             detail ? (
               <div className="node-info">
-                <div className="section invite">
-                  <div className="section-title">
-                    <span>Invite</span>
-                    {
-                      detail.invite && (
-                        <button className="btn">
-                          <span title="show more data" onClick={() => onOpenTable()}>{`${isOpen ? 'Close Table' : 'Open Table'} `}</span>
-                          {/* <BsTable /> */}
-                        </button>
-                      )
-                    }
-                  </div>
-                  {
-                    inviteList.length ? (
-                      inviteList.map((item: any, index: number) => {
-                        return (
-                          <div className="user-list" key={index}>
-                            <span style={{marginRight: 10, opacity: 0.55}}>user</span>
-                            <span style={{marginRight: 10}}>{item.lamport_id}</span>
-                            <span style={{width: 100, marginRight: 10, flex: 1, opacity: 0.55, textAlign: 'center'}}>join in project </span>
-                            <span>{item.facets.project_name}</span>
-                          </div>
-                        );
-                      })
-                    ) : '-'
-                  }
-                </div>
                 <div className="section">
                   <div className="section-title">
                     <span>User</span>
@@ -143,6 +103,33 @@ const UserContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any,
                       <BsCopy onClick={() => copyToClipboard(nodeData.uid)} />
                     </span>
                   </div>
+                </div>
+                <div className="section invite">
+                  <div className="section-title">
+                    <span>Invite</span>
+                    {
+                      detail.invite && (
+                        <button className="btn">
+                          <span title="show more data" onClick={() => onOpenTable()}>{`${isOpen ? 'Close Table' : 'Open Table'} `}</span>
+                          {/* <BsTable /> */}
+                        </button>
+                      )
+                    }
+                  </div>
+                  {
+                    inviteList.length ? (
+                      inviteList.map((item: any, index: number) => {
+                        return (
+                          <div className="user-list" key={index}>
+                            <span style={{marginRight: 10, opacity: 0.55}}>user</span>
+                            <span style={{marginRight: 10}}>{item.lamport_id}</span>
+                            <span style={{width: 100, marginRight: 10, flex: 1, opacity: 0.55, textAlign: 'center'}}>join in project </span>
+                            <span>{item.facets.project_name}</span>
+                          </div>
+                        );
+                      })
+                    ) : '-'
+                  }
                 </div>
                 <div className="section event">
                   <div className="section-title">Application</div>

@@ -88,7 +88,6 @@ const Root: FC = () => {
           // } else {
             const edgeItem = graph.addEdgeWithKey(`${category}-${source}-${target}`,source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
             edges.current.push(edgeItem)
-            console.log('edgeItem', edgeItem)
           // }
         });
 

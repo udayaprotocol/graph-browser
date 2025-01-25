@@ -77,13 +77,6 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
             return { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false };
           }
         } : null,
-        // ? (node, data) =>
-        //     node === debouncedHoveredNode ||
-        //     graph.hasEdge(node, debouncedHoveredNode) ||
-        //     graph.hasEdge(debouncedHoveredNode, node)
-        //       ? { ...data, zIndex: 1 }
-        //       : { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false }
-        // : null,
     );
     sigma.setSetting(
       "edgeReducer",
@@ -96,11 +89,10 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
             if(type === 'invite'){
               return  { ...data, color: '#40c6dd', size: 2 }
             } else if (type === 'members') {
-              return  { ...data, color: '#7373e4', size: 2 }
+              return  { ...data, color: '#b9326f', size: 2 }
             } else {
               return  { ...data, color: hoveredColor, size: 2 }
             }
-            // return { ...data, color: hoveredColor, size: 2 }
           } else {
             return { ...data, color: EDGE_FADE_COLOR, hidden: true }
           }
