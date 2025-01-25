@@ -38,10 +38,19 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
         return data;
       },
       edgeReducer: (edge: string, data: Attributes) => {
+        // console.log('hasExtremity', edge, data)
         if (debouncedHoveredNode) {
-          return graph.hasExtremity(edge, debouncedHoveredNode)
-            ? { ...data, color: hoveredColor, size: 4 }
-            : { ...data, color: EDGE_FADE_COLOR, hidden: true };
+          const targetEdge = graph.hasExtremity(edge, debouncedHoveredNode)
+          if (targetEdge) {
+            const type = edge.split('-')[0]
+            if(type === 'invite'){
+              return  { ...data, color: '#f00', size: 4 }
+            } else {
+              return  { ...data, color: hoveredColor, size: 4 }
+            }
+          } else {
+            return { ...data, color: EDGE_FADE_COLOR, hidden: true };
+          }
         }
         return data;
       },
@@ -79,11 +88,29 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
     sigma.setSetting(
       "edgeReducer",
       debouncedHoveredNode
-        ? (edge, data) =>
-            graph.hasExtremity(edge, debouncedHoveredNode)
-              ? { ...data, color: hoveredColor, size: 2 }
-              : { ...data, color: EDGE_FADE_COLOR, hidden: true }
-        : null,
+        ? (edge, data) => {
+          const target = graph.hasExtremity(edge, debouncedHoveredNode)
+          if(target){
+            const type = edge.split('-')[0]
+            console.log('type', type)
+            if(type === 'invite'){
+              return  { ...data, color: '#40c6dd', size: 2 }
+            } else if (type === 'members') {
+              return  { ...data, color: '#7373e4', size: 2 }
+            } else {
+              return  { ...data, color: hoveredColor, size: 2 }
+            }
+            // return { ...data, color: hoveredColor, size: 2 }
+          } else {
+            return { ...data, color: EDGE_FADE_COLOR, hidden: true }
+          }
+        } : null,
+        // (edge, data) =>
+        //     graph.hasExtremity(edge, debouncedHoveredNode)
+        //       ? { ...data, color: hoveredColor, size: 2 }
+        //       : { ...data, color: EDGE_FADE_COLOR, hidden: true }
+
+        // : null,
     );
   }, [debouncedHoveredNode]);
 

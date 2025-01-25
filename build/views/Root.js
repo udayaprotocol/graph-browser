@@ -50,7 +50,7 @@ const Root = () => {
     };
     (0, react_1.useEffect)(() => {
         try {
-            fetch('./all_data.json')
+            fetch('/api/all_data')
                 .then((res) => res.json())
                 .then((dataset) => {
                 const newNodes = dataset.nodes.map((node) => {

@@ -1,9 +1,9 @@
 import { SigmaContainer, ZoomControl } from "@react-sigma/core";
 // import { createNodeImageProgram } from "@sigma/node-image";
-import EdgeCurveProgram  from '@sigma/edge-curve'
+import { EdgeCurvedArrowProgram }  from '@sigma/edge-curve'
 import { DirectedGraph, MultiGraph } from "graphology";
 import { constant, keyBy, mapValues, omit } from "lodash";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { BiBookContent } from "react-icons/bi";
 import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft, BsWallet } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
@@ -36,13 +36,15 @@ const Root: FC = () => {
   // user || project
   const [curCategory, setCurCategory] = useState<string | null>(null)
   const [tableData, setTableData] = useState([]);
+  const edges = useRef<any[]>([])
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
-      edgeProgramClasses: { curve: EdgeCurveProgram, },
+      edgeProgramClasses: { curvedArrow: EdgeCurvedArrowProgram, },
+      // edgeProgramClasses: { curve: EdgeCurveProgram, },
       defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
       defaultNodeType: "circle", // image 
-      defaultEdgeType: "curve", // arrow、curve
+      defaultEdgeType: "curvedArrow", // arrow、curve
       labelDensity: 0.07,
       labelGridCellSize: 60,
       labelRenderedSizeThreshold: 15,
@@ -80,11 +82,13 @@ const Root: FC = () => {
             })
         });
 
-        dataset.edges.forEach(({source, target, category}) => {
+        dataset.edges.forEach(({source, target, category, uid}) => {
           // if(category === 'invite') {
           //   graph.addEdge(source, target, { size: 1, color: '#5ad0dd' })
           // } else {
-            graph.addEdge(source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
+            const edgeItem = graph.addEdgeWithKey(`${category}-${source}-${target}`,source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
+            edges.current.push(edgeItem)
+            console.log('edgeItem', edgeItem)
           // }
         });
 
@@ -169,6 +173,21 @@ const Root: FC = () => {
                 <span>user node</span>
               </div>
             </div>
+            {
+              hoveredNode ? (
+                <div className="line-list">
+                  <div className="line">
+                    <div className="line-item invite"></div>
+                    <span>invite event</span>
+                  </div>
+                  <div className="line">
+                    <div className="line-item members"></div>
+                    <span>members event</span>
+                  </div>
+                </div>
+              ) : null
+            }
+            
             <div className="sigma-contents">
               <div className="ico">
                 <button

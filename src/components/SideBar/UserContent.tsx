@@ -30,16 +30,25 @@ const UserContent :FC<{ nodeData: any, openTable: (isOpened: boolean, data: any,
         const list = nodeData.detail.invite.slice(0, 3)
         setInviteList(list)
       }
-      const neighbors = graph.neighbors(nodeData.uid);
-      setInputLinks(neighbors.length);
-      setOutputLinks(graph.degree(nodeData.uid));
+      const ineighbors = graph.inNeighbors(nodeData.uid);
+      const oneighbors = graph.outNeighbors(nodeData.uid);
+
+      setInputLinks(ineighbors.length);
+      setOutputLinks(oneighbors.length);
+
+      // const inEdges = graph.outEdges(nodeData.uid)
+      // graph.updateEdgeAttribute(inEdges, 'color', () => 'red')
+      // console.log('ine',inEdges)
       
-      requestAnimationFrame(() => {
-        const index = { nodes: 0, edges: 0 };
-        graph.forEachNode((_, { hidden }) => !hidden && index.nodes++);
-        graph.forEachEdge((_, _2, _3, _4, source, target) => !source.hidden && !target.hidden && index.edges++);
-        // setVisibleItems(index);
-      });
+      // requestAnimationFrame(() => {
+      //   const index = { nodes: 0, edges: 0 };
+      //   graph.forEachNode((_, { hidden }) => !hidden && index.nodes++);
+      //   // graph.forEachEdge((_, _2, _3, _4, source, target) => !source.hidden && !target.hidden && index.edges++);
+      //   graph.filterOutEdges((key, attrs, _3, _4, sourceAttr, targetAttr) => {
+      //     console.log('_, _2, _3, _4', key, attrs, _3, _4)
+      //   });
+      //   // setVisibleItems(index);
+      // });
     }, [nodeData]);
     
     useEffect(() => {
