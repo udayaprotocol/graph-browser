@@ -4,6 +4,7 @@ import 'animate.css';
 import "./styles.less";
 import "./main.less"
 import Root from "./views/Root";
+import { getDeviceType } from './utils/index'
 // import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 // const client = new ApolloClient({
@@ -26,9 +27,10 @@ import Root from "./views/Root";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
+const deviceType = getDeviceType()
 
 root.render(
   // <React.StrictMode>
-    <Root />
+    <Root deviceType={deviceType} />
   // </React.StrictMode>,
 );

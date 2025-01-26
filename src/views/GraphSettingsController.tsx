@@ -71,8 +71,9 @@ const GraphSettingsController: FC<PropsWithChildren<{ hoveredNode: string | null
           if (node === debouncedHoveredNode ||
             graph.hasEdge(node, debouncedHoveredNode) ||
             graph.hasEdge(debouncedHoveredNode, node)) {
+              console.log('data', data)
             // console.log('nodeReducer', node, data)
-            return { ...data, zIndex: 1 };
+            return { ...data, zIndex: 1, forceLabel: true };
           } else {
             return { ...data, zIndex: 0, label: "", color: NODE_FADE_COLOR, image: null, highlighted: false };
           }

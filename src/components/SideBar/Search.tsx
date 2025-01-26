@@ -126,7 +126,7 @@ const Search : FC<{ onSearch: (nodeId: string | null) => void }> = ({ onSearch }
                     options={values}
                     placeholder="Search..." 
                 />
-                <div className={`tag ${isAddress ? 'active' : ''}`} onClick={() => setIsAddress(!isAddress)} >Address</div>
+                <div className={`tag ${isAddress ? 'active' : ''}`} onClick={() => setIsAddress(!isAddress)} >LamportID</div>
             </div>
             {
                 isMore && (

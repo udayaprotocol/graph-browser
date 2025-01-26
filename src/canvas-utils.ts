@@ -126,18 +126,79 @@ export function drawLabel(
   data: PartialButFor<NodeDisplayData, "x" | "y" | "size" | "label" | "color">,
   settings: Settings,
 ): void {
+  console.log('context', context, data, settings)
+  const ProjectColor = 'rgba(194, 160, 190, 0.7)'
   if (!data.label) return;
+  const size = settings.labelSize;
+  const font = settings.labelFont;
+  const weight = settings.labelWeight;
+  const subLabelSize = size - 2;
 
-  const size = settings.labelSize,
-    font = settings.labelFont,
-    weight = settings.labelWeight;
+  const label = data.label;
+  const subLabel = "";
+  const clusterLabel = "";
 
-  context.font = `${weight} ${size}px ${font}`;
-  const width = context.measureText(data.label).width + 8;
+  if (label) {
+    // Then we draw the label background
+    context.beginPath();
+    context.fillStyle = "#fff";
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 2;
+    context.shadowBlur = 8;
+    context.shadowColor = "#000";
 
-  context.fillStyle = "#ffffffcc";
-  context.fillRect(data.x + data.size, data.y + size / 3 - 15, width, 20);
+    context.font = `${weight} ${size}px ${font}`;
+    const labelWidth = context.measureText(label).width;
+    context.font = `${weight} ${subLabelSize}px ${font}`;
+    const subLabelWidth = subLabel ? context.measureText(subLabel).width : 0;
+    context.font = `${weight} ${subLabelSize}px ${font}`;
+    const clusterLabelWidth = clusterLabel ? context.measureText(clusterLabel).width : 0;
 
-  context.fillStyle = "#000";
-  context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
+    const textWidth = Math.max(labelWidth, subLabelWidth, clusterLabelWidth);
+
+    const x = Math.round(data.x);
+    const y = Math.round(data.y);
+    const w = Math.round(textWidth + size / 2 + data.size + 3);
+    const hLabel = Math.round(size / 2 + 4);
+    const hSubLabel = subLabel ? Math.round(subLabelSize / 2 + 9) : 0;
+    const hClusterLabel = Math.round(subLabelSize / 2 + 9);
+    
+    const boxHeight = hClusterLabel + hLabel + hSubLabel + 12 + data.size
+    let rectY = y - boxHeight/2 - data.size/2 - 5
+    // 处理三行的情况
+    if(!subLabel) {
+      rectY -=7
+    }
+
+    drawRoundRect(context, x - w/2, y - boxHeight - 5, w, hClusterLabel + hLabel + hSubLabel + 12, 5);
+    context.closePath();
+    context.fill();
+
+    // drawNodeBorder(context, x, y, data.size)
+    // context.fill();
+
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 0;
+
+    // And finally we draw the labels
+    context.fillStyle = TEXT_COLOR;
+    context.font = `${weight} ${size}px ${font}`;
+    context.fillText(label, x - w/2 + data.size + 3 - data.size/2, rectY + size);
+  }
+
+  // if (!data.label) return;
+
+  // const size = settings.labelSize,
+  //   font = settings.labelFont,
+  //   weight = settings.labelWeight;
+
+  // context.font = `${weight} ${size}px ${font}`;
+  // const width = context.measureText(data.label).width + 8;
+
+  // context.fillStyle = "#ffffffcc";
+  // context.fillRect(data.x + data.size, data.y + size / 3 - 15, width, 20);
+
+  // context.fillStyle = "#000";
+  // context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
 }

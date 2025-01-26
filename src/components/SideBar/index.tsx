@@ -1,13 +1,12 @@
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import {  useSigma } from "@react-sigma/core";
+import { useSigma } from "@react-sigma/core";
 import Logo from '../../assets/nostr.svg'
 import UserContent from "./UserContent";
 import ProjectContent from "./ProjectContent";
 import Search from "./Search";
-import { isUser, isProject } from '../../utils'
 
 import './index.less'
-// import { TextField } from "@mui/material";
+
 const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | null,  onToggleTable: (isOpened: boolean, data: any, type: string | null) => void }>> = ({ node: selectedNode, isFold: fold, onToggleTable }) => {
   const sigma = useSigma();
   const graph = sigma.getGraph();
@@ -21,7 +20,6 @@ const SideBar : FC<PropsWithChildren<{ node: string | null, isFold: boolean | nu
     // 搜索或点击时设置Active
     if(selectedNode || selected){
       const attrs = graph.getNodeAttributes(selectedNode || selected)
-      console.log('attr', attrs)
       setNodeType(attrs.category)
       setNodeData(attrs)
     }

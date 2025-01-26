@@ -1,9 +1,7 @@
 import { SigmaContainer, ZoomControl } from "@react-sigma/core";
-// import { createNodeImageProgram } from "@sigma/node-image";
 import { EdgeCurvedArrowProgram }  from '@sigma/edge-curve'
-import { DirectedGraph, MultiGraph } from "graphology";
-import { constant, keyBy, mapValues, omit } from "lodash";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { MultiGraph } from "graphology";
+import { FC, useEffect, useMemo, useState } from "react";
 import { BiBookContent } from "react-icons/bi";
 import { BsArrowsFullscreen, BsZoomIn, BsZoomOut, BsChevronLeft, BsWallet } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
@@ -12,42 +10,37 @@ import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons'
 
 import { drawHover, drawLabel } from "../canvas-utils";
-import { Dataset, FiltersState } from "../types";
+import { Dataset } from "../types";
 import GraphEventsController from "./GraphEventsController";
 import GraphSettingsController from "./GraphSettingsController";
 import SideBar from "../components/SideBar"
 import DataTable from "../components/DataTable"
+import '../mobile.less'
 
 const ProjectColor = 'rgba(194, 160, 190, 0.7)'
 
-
-const Root: FC = () => {
+const Root: FC<{deviceType: string}> = ({ deviceType }) => {
   const graph = useMemo(() => new MultiGraph(), []);
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [isFold, setIsFold] = useState<boolean | null>(null);
-  const [filtersState, setFiltersState] = useState<FiltersState>({
-    clusters: {},
-    tags: {},
-  });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [isShow, setIsShow] = useState<boolean>(false);
   // user || project
   const [curCategory, setCurCategory] = useState<string | null>(null)
   const [tableData, setTableData] = useState([]);
-  const edges = useRef<any[]>([])
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
       edgeProgramClasses: { curvedArrow: EdgeCurvedArrowProgram, },
-      // edgeProgramClasses: { curve: EdgeCurveProgram, },
-      defaultDrawNodeLabel: drawLabel,
+      // defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
+      drawNodeLabel: drawLabel,
       defaultNodeType: "circle", // image 
       defaultEdgeType: "curvedArrow", // arrow、curve
       labelDensity: 0.07,
       labelGridCellSize: 60,
-      labelRenderedSizeThreshold: 15,
+      labelRenderedSizeThreshold: 14,
       labelFont: "Lato, sans-serif",
       zIndex: true,
     }),
@@ -83,12 +76,7 @@ const Root: FC = () => {
         });
 
         dataset.edges.forEach(({source, target, category, uid}) => {
-          // if(category === 'invite') {
-          //   graph.addEdge(source, target, { size: 1, color: '#5ad0dd' })
-          // } else {
-            const edgeItem = graph.addEdgeWithKey(`${category}-${source}-${target}`,source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
-            edges.current.push(edgeItem)
-          // }
+          graph.addEdgeWithKey(`${category}-${source}-${target}`,source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' })
         });
 
         graph.forEachNode((node, attrs) => {
@@ -96,6 +84,7 @@ const Root: FC = () => {
           if (attrs.category === 'User') {
             graph.setNodeAttribute(node,"color",'rgba(73, 94, 152, 0.7)');
           } else {
+            graph.setNodeAttribute(node,"size",14);
             graph.setNodeAttribute(node,"color",ProjectColor);
           }
         });
@@ -125,7 +114,7 @@ const Root: FC = () => {
   );
 
   return (
-    <div id="app-root" className={showContents ? "show-contents" : ""}>
+    <div id="app-root" className={`${showContents ? "show-contents" : ""} ${deviceType}`}>
       <SigmaContainer graph={graph} settings={sigmaSettings} className={ isFold ? 'fold-sider-bar' : '' }>
         <GraphSettingsController hoveredNode={hoveredNode} />
         <GraphEventsController setHoveredNode={setHoveredNode} />

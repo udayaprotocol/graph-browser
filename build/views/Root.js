@@ -23,15 +23,10 @@ const Root = () => {
     const [dataReady, setDataReady] = (0, react_1.useState)(false);
     const [dataset, setDataset] = (0, react_1.useState)(null);
     const [isFold, setIsFold] = (0, react_1.useState)(null);
-    const [filtersState, setFiltersState] = (0, react_1.useState)({
-        clusters: {},
-        tags: {},
-    });
     const [hoveredNode, setHoveredNode] = (0, react_1.useState)(null);
     const [isShow, setIsShow] = (0, react_1.useState)(false);
     const [curCategory, setCurCategory] = (0, react_1.useState)(null);
     const [tableData, setTableData] = (0, react_1.useState)([]);
-    const edges = (0, react_1.useRef)([]);
     const sigmaSettings = (0, react_1.useMemo)(() => ({
         edgeProgramClasses: { curvedArrow: edge_curve_1.EdgeCurvedArrowProgram, },
         defaultDrawNodeLabel: canvas_utils_1.drawLabel,
@@ -51,7 +46,7 @@ const Root = () => {
     };
     (0, react_1.useEffect)(() => {
         try {
-            fetch('/api/all_data')
+            fetch('./all_data.json')
                 .then((res) => res.json())
                 .then((dataset) => {
                 const newNodes = dataset.nodes.map((node) => {
@@ -63,8 +58,7 @@ const Root = () => {
                     graph.addNode(node.uid, Object.assign({}, node));
                 });
                 dataset.edges.forEach(({ source, target, category, uid }) => {
-                    const edgeItem = graph.addEdgeWithKey(`${category}-${source}-${target}`, source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' });
-                    edges.current.push(edgeItem);
+                    graph.addEdgeWithKey(`${category}-${source}-${target}`, source, target, { size: 1, color: 'rgba(123, 155, 212, 0.7)' });
                 });
                 graph.forEachNode((node, attrs) => {
                     graph.setNodeAttribute(node, "size", 10);
