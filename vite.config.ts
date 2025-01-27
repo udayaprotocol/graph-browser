@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig ({
+  build: {
+    outDir: 'html'
+  },
   server: {
     port: 3000,
     proxy: {

@@ -7,6 +7,8 @@ require("animate.css");
 require("./styles.less");
 require("./main.less");
 const Root_1 = tslib_1.__importDefault(require("./views/Root"));
+const index_1 = require("./utils/index");
 const root = client_1.default.createRoot(document.getElementById("root"));
-root.render((0, jsx_runtime_1.jsx)(Root_1.default, {}));
+const deviceType = (0, index_1.getDeviceType)();
+root.render((0, jsx_runtime_1.jsx)(Root_1.default, { deviceType: deviceType }));
 //# sourceMappingURL=index.js.map
