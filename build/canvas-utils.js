@@ -74,7 +74,7 @@ function drawLabel(context, data, settings) {
     const ProjectColor = 'rgba(194, 160, 190, 0.7)';
     if (!data.label)
         return;
-    const size = settings.labelSize;
+    const size = settings.labelSize - 2;
     const font = settings.labelFont;
     const weight = settings.labelWeight;
     const subLabelSize = size - 2;
@@ -106,7 +106,7 @@ function drawLabel(context, data, settings) {
         if (!subLabel) {
             rectY -= 7;
         }
-        drawRoundRect(context, x - w / 2, y - boxHeight - 5, w, hClusterLabel + hLabel + hSubLabel + 12, 5);
+        drawRoundRect(context, x - w / 2 + 6, y - boxHeight + 8, w - 14, hClusterLabel + hLabel + hSubLabel, 4);
         context.closePath();
         context.fill();
         context.shadowOffsetX = 0;
@@ -114,7 +114,7 @@ function drawLabel(context, data, settings) {
         context.shadowBlur = 0;
         context.fillStyle = TEXT_COLOR;
         context.font = `${weight} ${size}px ${font}`;
-        context.fillText(label, x - w / 2 + data.size + 3 - data.size / 2, rectY + size);
+        context.fillText(label, x - w / 2 + data.size + 3 - data.size / 2, rectY + size + 6);
     }
 }
 //# sourceMappingURL=canvas-utils.js.map

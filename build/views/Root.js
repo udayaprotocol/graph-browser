@@ -47,7 +47,7 @@ const Root = ({ deviceType }) => {
     };
     (0, react_1.useEffect)(() => {
         try {
-            fetch('/api/all_data')
+            fetch('./all_data.json')
                 .then((res) => res.json())
                 .then((dataset) => {
                 const newNodes = dataset.nodes.map((node) => {

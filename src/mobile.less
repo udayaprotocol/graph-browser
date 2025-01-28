@@ -1,0 +1,55 @@
+.h5 {
+  .sigma-container {
+    left: 0;
+    width: 100vw;
+  }
+  .pages {
+    left: 20px;
+    top: 20px;
+    right: auto;
+  }
+  .line-list {
+    left: 20px;
+    bottom: 20px;
+  }
+  .controls {
+    left: 20px;
+    right: auto;
+    top: auto;
+    bottom: 70px;
+    .fold-btn {
+      display: none;
+    }
+  }
+
+  .panels {
+    display: none;
+  }
+
+  .sigma-contents {
+    position: absolute;
+    width: 100vw;
+    height: auto;
+    min-height: 50vh;
+    overflow: hidden;
+    bottom: 0;
+    background: #222325;
+    display: none;
+    .ico {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      > button {
+        background: rgba(255, 255, 255, 0.35);
+        margin-top: 0;
+      }
+    }
+    .panels {
+      height: 100%;
+    }
+  }
+  &.show-contents .panels, &.show-contents .sigma-contents {
+    display: block;
+  }
+}
