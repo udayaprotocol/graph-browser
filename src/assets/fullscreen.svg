@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" viewBox="0 0 96 96" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:2;" width="100%" height="100%">
+    <style xmlns="http://www.w3.org/2000/svg" type="text/css">
+        .st0{fill:none;fill-rule:nonzero;stroke:currentColor;stroke-width:8px;}
+    </style>
+    <g xmlns="http://www.w3.org/2000/svg">
+        <path d="M92.8,71.003L92.8,83.2L75.058,83.2" class="st0"></path>
+        <path d="M65.014,83.2L34.968,83.2" class="st0"></path>
+        <path d="M24.994,83.2L4,83.2L4,71.003" class="st0"></path>
+        <path d="M4,60.954L4,35.036" class="st0"></path>
+        <path d="M4,25.06L4,11.8L24.994,11.8" class="st0"></path>
+        <path d="M34.968,11.8L65.014,11.8" class="st0"></path>
+        <path d="M75.058,11.8L92.8,11.8L92.8,25.06" class="st0"></path>
+        <path d="M92.8,35.036L92.8,60.954" class="st0"></path>
+    </g>
+</svg>
